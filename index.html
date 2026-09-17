@@ -244,6 +244,13 @@ if(input.value.trim()===""){
 complete = false;
 }
 
+});
+
+document.getElementById("verifyBtn").style.display =
+complete ? "inline-block" : "none";
+
+}
+
 function checkCrossword(){
 
 const inputs =
@@ -258,6 +265,23 @@ input.value.toUpperCase() !==
 input.dataset.solution
 ){
 ok = false;
+}
+
+});
+
+if(ok){
+
+document.getElementById("success")
+.style.display = "block";
+
+}else{
+
+alert(
+"Qualche risposta non è corretta ❤️"
+);
+
+}
+
 }
 
 });
