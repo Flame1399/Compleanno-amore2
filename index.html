@@ -209,9 +209,9 @@ const matrix = [
 const crossword =
 document.getElementById("crossword");
 
-matrix.forEach(row=>{
+matrix.forEach((row,rowIndex)=>{
 
-row.split('').forEach(char=>{
+row.split('').forEach((char,colIndex)=>{
 
 const cell =
 document.createElement("div");
@@ -231,10 +231,32 @@ input.maxLength = 1;
 
 input.dataset.solution = char;
 
-input.addEventListener("input",()=>{
+const numbers = {
+"1-0":1,
+"1-3":2,
+"2-2":3,
+"3-1":4,
+"5-1":5,
+"8-1":6,
+"10-0":7,
+"12-0":8
+};
 
-input.value =
-input.value.toUpperCase();
+const key = rowIndex + "-" + colIndex;
+
+if(numbers[key]){
+
+const number =
+document.createElement("div");
+
+number.className = "number";
+
+number.textContent =
+numbers[key];
+
+cell.appendChild(number);
+
+}
 
 checkAllFilled();
 
