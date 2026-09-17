@@ -32,6 +32,20 @@ h1{
     flex-wrap:wrap;
 }
 
+.crossword{
+    display:grid;
+    grid-template-columns:repeat(12,35px);
+    grid-template-rows:repeat(15,35px);
+    gap:0;
+    padding:0;
+    margin:0;
+    width:420px;
+    height:525px;
+    background:#000;
+    border:2px solid #000;
+}
+`
+
 .cell,
 .black{
     box-sizing:border-box;
