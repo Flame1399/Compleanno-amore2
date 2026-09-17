@@ -33,24 +33,20 @@ h1{
 }
 
 .crossword{
-display:grid;
-grid-template-columns:
-repeat(15,35px);
+    display:grid;
+    grid-template-columns:repeat(15,35px);
+    gap:0;
+    line-height:0;
 }
 
+
+.cell,
 .black{
     width:35px;
     height:35px;
-    background:black;
+    margin:0;
+    padding:0;
 }
-
-.cell{
-    width:35px;
-    height:35px;
-    background:white;
-    border:1px solid #ccc;
-    position:relative;
-}    
 
 .cell.black{
     background:black;
@@ -328,15 +324,15 @@ function moveToNextCell(input){
 document
 .querySelectorAll(".cell input")
 .forEach(input=>{
+let currentDirection = "across";
+   input.addEventListener("click",()=>{
 
-    input.addEventListener("click",()=>{
+currentDirection =
+currentDirection === "across"
+? "down"
+: "across";
 
-        input.dataset.direction =
-        input.dataset.direction === "across"
-        ? "down"
-        : "across";
-
-    });
+});
 
     input.addEventListener("input",()=>{
 
