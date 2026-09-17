@@ -554,10 +554,11 @@ function moveToNextEmptyCell(input){
 
         next.focus();
 
-        activeInput = next;
+activeInput = next;
 
-        return;
+highlightActiveWord(next);
 
+return;
     }
 
 }
@@ -586,11 +587,13 @@ function moveToPreviousCell(input){
 
     if(previous){
 
-        previous.focus();
+    previous.focus();
 
-        activeInput = previous;
+    activeInput = previous;
 
-    }
+    highlightActiveWord(previous);
+
+}
 
 }
 
@@ -606,17 +609,20 @@ document
 
     input.addEventListener("click", () => {
 
-        const clickedAgain =
-            activeInput === input;
+    const clickedAgain =
+        activeInput === input;
 
-        chooseDirection(
-            input,
-            clickedAgain
-        );
+    chooseDirection(
+        input,
+        clickedAgain
+    );
 
-        activeInput = input;
+    activeInput = input;
 
-    });
+    highlightActiveWord(input);
+
+});
+``
 
 
     /* INSERIMENTO LETTERA */
