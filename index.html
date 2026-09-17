@@ -214,17 +214,56 @@ matrix.forEach((row,rowIndex)=>{
 
 row.split('').forEach((char,colIndex)=>{
 
-const cell =
-document.createElement("div");
+const cells = {};
 
-if(char==="#"){
+document
+.querySelectorAll(".cell input")
+.forEach(input=>{
 
-cell.className="black";
+const key =
+input.dataset.row +
+"-" +
+input.dataset.col;
+
+cells[key]=input;
+
+});
+    
+function moveToNextCell(input){
+
+const row =
+parseInt(input.dataset.row);
+
+const col =
+parseInt(input.dataset.col);
+
+const direction =
+input.dataset.direction;
+
+let nextKey;
+
+if(direction==="across"){
+
+nextKey =
+row + "-" + (col+1);
 
 }else{
 
-cell.className="cell";
+nextKey =
+(row+1) + "-" + col;
 
+}
+
+if(cells[nextKey]){
+
+cells[nextKey].focus();
+
+cells[nextKey].dataset.direction =
+direction;
+
+}
+
+}
 const input =
 document.createElement("input");
 
@@ -235,19 +274,20 @@ input.dataset.row = rowIndex;
 input.dataset.col = colIndex;
 input.dataset.direction = "across";
 
-input.addEventListener("click",()=>{
+input.addEventListener("input",()=>{
 
-if(
-input.dataset.direction === "across"
-){
+input.value =
+input.value
+.toUpperCase()
+.substring(0,1);
 
-input.dataset.direction = "down";
+if(input.value){
 
-}else{
-
-input.dataset.direction = "across";
+moveToNextCell(input);
 
 }
+
+checkAllFilled();
 
 });
 
