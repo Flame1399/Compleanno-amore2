@@ -44,14 +44,21 @@ h1{
 
 .cell,
 .black{
+    box-sizing:border-box;
     width:35px;
     height:35px;
     margin:0;
     padding:0;
 }
 
-.cell.black{
-    background:black;
+.cell{
+    position:relative;
+    background:#ffffff;
+    border:1px solid #999;
+}
+
+.black{
+    background:#000000;
 }
 
 .cell input{
@@ -185,23 +192,21 @@ Hai trovato il primo indizio.
 
 <script>
 const matrix = [
-
-"####S##########",
-"###MARIKA######",
-"##V#L#L#MISS##",
-"#MATERA#O#####",
-"##L#R###R#####",
-"#MINNIE#E#####",
-"##G#O#########",
-"##I###########",
-"#CALICE#P#####",
-"#####O##U#R###",
-"V##DICEMBRE###",
-"I####C#####L##",
-"NOCCIOTELLA###",
-"O####L#####X##",
-"###WEEKEND####"
-
+    "####S##########",
+    "###MARIKA######",
+    "##V#L#L#MISS###",
+    "#MATERA#O######",
+    "##L#R###R######",
+    "#MINNIE#E######",
+    "##G#O##########",
+    "##I############",
+    "#CALICE#P######",
+    "#####O##U#R####",
+    "V##DICEMBRE####",
+    "I####C####L####",
+    "NOCCIOTELLA####",
+    "O####L####X####",
+    "###WEEKEND#####"
 ];
 
 const numbers = {
