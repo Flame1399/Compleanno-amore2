@@ -251,45 +251,15 @@ input.value
 .toUpperCase()
 .substring(0,1);
 
+if(input.value){
+
+    moveToNextCell(input);
+
+}
+
 checkAllFilled();
 
 });
-
-const numbers = {
-
-"0-4":1,   // SALERNO
-
-"1-3":2,   // MARIKA
-
-"2-6":3,   // ILA
-
-"2-9":4,   // AMORE
-
-"3-1":5,   // VALIGIA
-
-"2-9":6,   // MISS
-
-"4-0":7,   // MATERA
-
-"6-1":8,   // MINNIE
-
-"10-1":9,  // CALICE
-
-"10-5":10, // COLLINE
-
-"10-9":11, // PUB
-
-"10-13":12,// RELAX
-
-"13-0":13, // VINO
-
-"13-3":14, // DICEMBRE
-
-"15-0":15, // NOCCIOTELLA
-
-"17-3":16  // WEEKEND
-
-};
 
 
 const key =
@@ -321,24 +291,70 @@ crossword.appendChild(cell);
 
 checkAllFilled();
 
+const cells = {};
+function moveToNextCell(input){
+
+    const row =
+    parseInt(input.dataset.row);
+
+    const col =
+    parseInt(input.dataset.col);
+
+    const direction =
+    input.dataset.direction;
+
+    let nextKey;
+
+    if(direction === "across"){
+
+        nextKey =
+        row + "-" + (col + 1);
+
+    }else{
+
+        nextKey =
+        (row + 1) + "-" + col;
+
+    }
+
+    if(cells[nextKey]){
+
+        cells[nextKey].focus();
+
+    }
+
+}
+
+document
+.querySelectorAll(".cell input")
+.forEach(input => {
+
+    const key =
+    input.dataset.row +
+    "-" +
+    input.dataset.col;
+
+    cells[key] = input;
+
 });
 
 const numbers = {
 
-"0-4":1,
-"1-3":2,
-"2-2":3,
-"2-8":4,
-"3-1":5,
-"5-1":6,
-"8-1":7,
-"10-0":8,
-"10-3":9,
-"10-11":10,
-"12-0":11,
-"13-5":12,
-"13-11":13,
-"14-3":14
+"0-4":1,   // SALERNO
+"1-3":2,   // MARIKA
+"2-2":3,   // ILA
+"2-8":4,   // AMORE
+"3-1":5,   // VALIGIA
+"2-9":6,   // MISS
+"5-1":8,   // MINNIE
+"8-1":9,   // CALICE
+"9-5":10,  // COLLINE
+"10-8":11, // PUB
+"10-13":12,// RELAX
+"13-0":13, // VINO
+"13-3":14, // DICEMBRE
+"12-0":15, // NOCCIOTELLA
+"14-3":16  // WEEKEND
 
 };
 
