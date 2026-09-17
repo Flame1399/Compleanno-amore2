@@ -31,6 +31,9 @@ h1{
     gap:40px;
     flex-wrap:wrap;
 }
+.cell input:focus{
+    background:#ffe0eb;
+}
 
 .crossword{
     display:grid;
@@ -73,6 +76,10 @@ h1{
     font-weight:bold;
     text-transform:uppercase;
     background:transparent;
+}
+
+.cell input:focus{
+    background:#ffe3ed;
 }
 
 .number{
@@ -289,74 +296,259 @@ const cells = {};
 
 document
 .querySelectorAll(".cell input")
-.forEach(input=>{
+.forEach(input => {
 
     const key =
-    input.dataset.row +
-    "-" +
-    input.dataset.col;
+        input.dataset.row +
+        "-" +
+        input.dataset.col;
 
     cells[key] = input;
 
 });
 
-function moveToNextCell(input){
 
-    const row =
-    parseInt(input.dataset.row);
+let currentDirection = "across";
+let activeInput = null;
 
-    const col =
-    parseInt(input.dataset.col);
 
-    let nextKey;
+/* Recupera una casella tramite riga e colonna */
 
-    if(currentDirection === "across"){
+function getCell(row, col){
 
-        nextKey =
-        row + "-" + (col + 1);
+    return cells[row + "-" + col] || null;
 
-    }else{
+}
 
-        nextKey =
-        (row + 1) + "-" + col;
+
+/* Capisce se la casella fa parte di una parola
+   orizzontale, verticale oppure di entrambe */
+
+function getAvailableDirections(input){
+
+    const row = parseInt(input.dataset.row);
+    const col = parseInt(input.dataset.col);
+
+    const left = getCell(row, col - 1);
+    const right = getCell(row, col + 1);
+
+    const up = getCell(row - 1, col);
+    const down = getCell(row + 1, col);
+
+    return {
+        across: !!(left || right),
+        down: !!(up || down)
+    };
+
+}
+
+
+/* Sceglie automaticamente la direzione corretta */
+
+function chooseDirection(input, clickedAgain){
+
+    const directions =
+        getAvailableDirections(input);
+
+    /* Casella appartenente solo a parola orizzontale */
+
+    if(
+        directions.across &&
+        !directions.down
+    ){
+
+        currentDirection = "across";
+
+        return;
 
     }
 
-    if(cells[nextKey]){
 
-        cells[nextKey].focus();
+    /* Casella appartenente solo a parola verticale */
+
+    if(
+        directions.down &&
+        !directions.across
+    ){
+
+        currentDirection = "down";
+
+        return;
+
+    }
+
+
+    /* Casella di incrocio:
+       secondo click cambia direzione */
+
+    if(
+        directions.across &&
+        directions.down &&
+        clickedAgain
+    ){
+
+        currentDirection =
+            currentDirection === "across"
+            ? "down"
+            : "across";
 
     }
 
 }
-let currentDirection = "across";
+
+
+/* Passa alla prima casella VUOTA successiva */
+
+function moveToNextEmptyCell(input){
+
+    const row = parseInt(input.dataset.row);
+    const col = parseInt(input.dataset.col);
+
+    let nextRow = row;
+    let nextCol = col;
+
+    while(true){
+
+        if(currentDirection === "across"){
+
+            nextCol++;
+
+        }else{
+
+            nextRow++;
+
+        }
+
+        const next =
+            getCell(nextRow, nextCol);
+
+        /* Fine della parola */
+
+        if(!next){
+
+            return;
+
+        }
+
+
+        /* Se contiene già una lettera,
+           continua a cercare */
+
+        if(
+            next.value.trim() !== ""
+        ){
+
+            continue;
+
+        }
+
+
+        /* Prima casella vuota trovata */
+
+        next.focus();
+
+        activeInput = next;
+
+        return;
+
+    }
+
+}
+
+
+/* Torna alla casella precedente */
+
+function moveToPreviousCell(input){
+
+    const row = parseInt(input.dataset.row);
+    const col = parseInt(input.dataset.col);
+
+    let previous;
+
+    if(currentDirection === "across"){
+
+        previous =
+            getCell(row, col - 1);
+
+    }else{
+
+        previous =
+            getCell(row - 1, col);
+
+    }
+
+    if(previous){
+
+        previous.focus();
+
+        activeInput = previous;
+
+    }
+
+}
+
+
+/* Gestione della compilazione */
+
 document
 .querySelectorAll(".cell input")
-.forEach(input=>{
+.forEach(input => {
 
-   input.addEventListener("click",()=>{
 
-currentDirection =
-currentDirection === "across"
-? "down"
-: "across";
+    /* CLICK */
 
-});
+    input.addEventListener("click", () => {
 
-    input.addEventListener("input",()=>{
+        const clickedAgain =
+            activeInput === input;
+
+        chooseDirection(
+            input,
+            clickedAgain
+        );
+
+        activeInput = input;
+
+    });
+
+
+    /* INSERIMENTO LETTERA */
+
+    input.addEventListener("input", () => {
 
         input.value =
-        input.value
-        .toUpperCase()
-        .substring(0,1);
+            input.value
+            .toUpperCase()
+            .replace(/[^A-ZÀÈÉÌÒÙ]/g, "")
+            .substring(0,1);
 
         if(input.value){
 
-            moveToNextCell(input);
+            moveToNextEmptyCell(input);
 
         }
 
         checkAllFilled();
+
+    });
+
+
+    /* TASTO BACKSPACE */
+
+    input.addEventListener(
+        "keydown",
+        event => {
+
+        if(
+            event.key === "Backspace" &&
+            input.value === ""
+        ){
+
+            event.preventDefault();
+
+            moveToPreviousCell(input);
+
+        }
 
     });
 
