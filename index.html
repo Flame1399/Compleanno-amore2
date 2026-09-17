@@ -186,7 +186,6 @@ Hai trovato il primo indizio.
 </div>
 
 <script>
-
 const matrix = [
 
 "####S##########",
@@ -207,91 +206,95 @@ const matrix = [
 
 ];
 
+const numbers = {
+
+"0-4":1,
+"1-3":2,
+"2-2":3,
+"2-8":4,
+"3-1":5,
+"2-9":6,
+"5-1":8,
+"8-1":9,
+"9-5":10,
+"10-8":11,
+"10-13":12,
+"13-0":13,
+"13-3":14,
+"12-0":15,
+"14-3":16
+
+};
+
 const crossword =
 document.getElementById("crossword");
 
 matrix.forEach((row,rowIndex)=>{
 
-row.split('').forEach((char,colIndex)=>{
+    row.split("").forEach((char,colIndex)=>{
 
-const cell =
-document.createElement("div");
+        const cell =
+        document.createElement("div");
 
-if(char==="#"){
+        if(char === "#"){
 
-cell.className="black";
+            cell.className = "black";
 
-}else{
+        }else{
 
-cell.className="cell";
+            cell.className = "cell";
 
-const input =
-document.createElement("input");
+            const input =
+            document.createElement("input");
 
-input.maxLength = 1;
+            input.maxLength = 1;
 
-input.dataset.solution = char;
-input.dataset.row = rowIndex;
-input.dataset.col = colIndex;
-input.dataset.direction = "across";
+            input.dataset.solution = char;
+            input.dataset.row = rowIndex;
+            input.dataset.col = colIndex;
+            input.dataset.direction = "across";
 
-input.addEventListener("click",()=>{
+            const key =
+            rowIndex + "-" + colIndex;
 
-input.dataset.direction =
-input.dataset.direction === "across"
-? "down"
-: "across";
+            if(numbers[key]){
 
-});
+                const number =
+                document.createElement("div");
 
-input.addEventListener("input",()=>{
+                number.className = "number";
+                number.textContent =
+                numbers[key];
 
-input.value =
-input.value
-.toUpperCase()
-.substring(0,1);
+                cell.appendChild(number);
 
-if(input.value){
+            }
 
-    moveToNextCell(input);
+            cell.appendChild(input);
 
-}
+        }
 
-checkAllFilled();
+        crossword.appendChild(cell);
 
-});
-
-
-const key =
-rowIndex + "-" + colIndex;
-
-if(numbers[key]){
-
-const number =
-document.createElement("div");
-
-number.className="number";
-
-number.textContent =
-numbers[key];
-
-cell.appendChild(number);
-
-}
-
-cell.appendChild(input);
-
-}
-
-crossword.appendChild(cell);
+    });
 
 });
-
-});
-
-checkAllFilled();
 
 const cells = {};
+
+document
+.querySelectorAll(".cell input")
+.forEach(input=>{
+
+    const key =
+    input.dataset.row +
+    "-" +
+    input.dataset.col;
+
+    cells[key] = input;
+
+});
+
 function moveToNextCell(input){
 
     const row =
@@ -300,12 +303,9 @@ function moveToNextCell(input){
     const col =
     parseInt(input.dataset.col);
 
-    const direction =
-    input.dataset.direction;
-
     let nextKey;
 
-    if(direction === "across"){
+    if(input.dataset.direction === "across"){
 
         nextKey =
         row + "-" + (col + 1);
@@ -327,116 +327,96 @@ function moveToNextCell(input){
 
 document
 .querySelectorAll(".cell input")
-.forEach(input => {
+.forEach(input=>{
 
-    const key =
-    input.dataset.row +
-    "-" +
-    input.dataset.col;
+    input.addEventListener("click",()=>{
 
-    cells[key] = input;
+        input.dataset.direction =
+        input.dataset.direction === "across"
+        ? "down"
+        : "across";
 
-});
+    });
 
-const numbers = {
+    input.addEventListener("input",()=>{
 
-"0-4":1,   // SALERNO
-"1-3":2,   // MARIKA
-"2-2":3,   // ILA
-"2-8":4,   // AMORE
-"3-1":5,   // VALIGIA
-"2-9":6,   // MISS
-"5-1":8,   // MINNIE
-"8-1":9,   // CALICE
-"9-5":10,  // COLLINE
-"10-8":11, // PUB
-"10-13":12,// RELAX
-"13-0":13, // VINO
-"13-3":14, // DICEMBRE
-"12-0":15, // NOCCIOTELLA
-"14-3":16  // WEEKEND
+        input.value =
+        input.value
+        .toUpperCase()
+        .substring(0,1);
 
-};
+        if(input.value){
 
-const key = rowIndex + "-" + colIndex;
+            moveToNextCell(input);
 
-if(numbers[key]){
+        }
 
-const number =
-document.createElement("div");
+        checkAllFilled();
 
-number.className = "number";
-
-number.textContent =
-numbers[key];
-
-cell.appendChild(number);
-
-}
-
-
-cell.appendChild(input);
-
-}
-
-crossword.appendChild(cell);
-
-});
+    });
 
 });
 
 function checkAllFilled(){
 
-const inputs =
-document.querySelectorAll(".cell input");
+    const inputs =
+    document.querySelectorAll(".cell input");
 
-let complete = true;
+    let complete = true;
 
-inputs.forEach(input=>{
+    inputs.forEach(input=>{
 
-if(input.value.trim()===""){
-complete = false;
-}
+        if(input.value.trim() === ""){
 
-});
+            complete = false;
 
-document.getElementById("verifyBtn").style.display =
-complete ? "inline-block" : "none";
+        }
+
+    });
+
+    document.getElementById("verifyBtn")
+    .style.display =
+    complete ? "inline-block" : "none";
 
 }
 
 function checkCrossword(){
 
-const inputs =
-document.querySelectorAll(".cell input");
+    const inputs =
+    document.querySelectorAll(".cell input");
 
-let ok = true;
+    let ok = true;
 
-inputs.forEach(input=>{
+    inputs.forEach(input=>{
 
-if(
-input.value.toUpperCase() !==
-input.dataset.solution
-){
-ok = false;
+        if(
+            input.value.toUpperCase() !==
+            input.dataset.solution
+        ){
+
+            ok = false;
+
+        }
+
+    });
+
+    if(ok){
+
+        document.getElementById("success")
+        .style.display = "block";
+
+    }else{
+
+        alert(
+        "Qualche risposta non è corretta ❤️"
+        );
+
+    }
+
 }
 
-});
 
-if(ok){
-
-document.getElementById("success")
-.style.display = "block";
-
-}else{
-
-alert(
-"Qualche risposta non è corretta ❤️"
-);
-
-}
-
-}
+  
 </script>
 
 </body>
