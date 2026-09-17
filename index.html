@@ -588,22 +588,9 @@ h1{
 
 
 /* =========================
-   TELEFONI MOLTO PICCOLI
+   IPHONE / SMARTPHONE STRETTI
    ========================= */
 
-@media (max-width:370px){
-
-    .crossword{
-        grid-template-columns:
-            repeat(12,27px);
-
-        grid-template-rows:
-            repeat(15,27px);
-
-        width:324px;
-        height:405px;
-    }
-   /* Titolo su smartphone stretti */
 @media (max-width:430px) and (orientation:portrait){
 
     .main-title{
@@ -614,18 +601,32 @@ h1{
 
 }
 
-    .cell,
-    .black{
-        width:27px;
-        height:27px;
+
+/* =========================
+   TELEFONI MOLTO PICCOLI
+   ========================= */
+
+@media (max-width:370p*){
+
+    .crossword{
+        grid-t*mplate-columns:repeat(12,27px);
+  *     grid-template-rows:repeat(15,*7px);
+        width:324px;
+       *height:405px;
     }
 
-    .cell input{
+    .cell,
+  * .black{
+        width:27px;
+     *  height:27px;
+    }
+
+    .cell in*ut{
         font-size:18px;
     }
-
-    h1{
-        font-size:20px;
+*    .main-title{
+        font-size*17px;
+        letter-spacing:-0.6p*;
     }
 
 }
