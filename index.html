@@ -114,40 +114,54 @@ h1{
 
 <div class="crossword">
 
-<!-- AMORE -->
-
-<div class="cell"><div class="number">1</div><input id="a1" class="letter"></div>
-<div class="cell"><input id="a2" class="letter"></div>
-<div class="cell"><input id="a3" class="letter"></div>
-<div class="cell"><input id="a4" class="letter"></div>
-<div class="cell"><input id="a5" class="letter"></div>
-
+<!-- RIGA 1 -->
+<div class="cell"><div class="number">1</div><input id="r1c1" class="letter"></div>
+<div class="cell"><input id="r1c2" class="letter"></div>
+<div class="cell"><input id="r1c3" class="letter"></div>
+<div class="cell"><input id="r1c4" class="letter"></div>
+<div class="cell"><input id="r1c5" class="letter"></div>
+<div class="cell"><input id="r1c6" class="letter"></div>
 <div class="cell black"></div>
 <div class="cell black"></div>
+
+<!-- RIGA 2 -->
+<div class="cell"><input id="r2c1" class="letter"></div>
 <div class="cell black"></div>
-
-<!-- PUB -->
-
-<div class="cell"><div class="number">2</div><input id="b1" class="letter"></div>
-<div class="cell"><input id="b2" class="letter"></div>
-<div class="cell"><input id="b3" class="letter"></div>
-
+<div class="cell black"></div>
 <div class="cell black"></div>
 <div class="cell black"></div>
 <div class="cell black"></div>
 <div class="cell black"></div>
 <div class="cell black"></div>
 
-<!-- MATERA -->
-
-<div class="cell"><div class="number">3</div><input id="c1" class="letter"></div>
-<div class="cell"><input id="c2" class="letter"></div>
-<div class="cell"><input id="c3" class="letter"></div>
-<div class="cell"><input id="c4" class="letter"></div>
-<div class="cell"><input id="c5" class="letter"></div>
-<div class="cell"><input id="c6" class="letter"></div>
-
+<!-- RIGA 3 -->
+<div class="cell"><div class="number">2</div><input id="r3c1" class="letter"></div>
+<div class="cell"><input id="r3c2" class="letter"></div>
+<div class="cell"><input id="r3c3" class="letter"></div>
 <div class="cell black"></div>
+<div class="cell black"></div>
+<div class="cell black"></div>
+<div class="cell black"></div>
+<div class="cell black"></div>
+
+<!-- RIGA 4 -->
+<div class="cell"><input id="r4c1" class="letter"></div>
+<div class="cell"><input id="r4c2" class="letter"></div>
+<div class="cell"><input id="r4c3" class="letter"></div>
+<div class="cell"><input id="r4c4" class="letter"></div>
+<div class="cell"><input id="r4c5" class="letter"></div>
+<div class="cell"><input id="r4c6" class="letter"></div>
+<div class="cell black"></div>
+<div class="cell black"></div>
+
+<!-- RIGA 5 -->
+<div class="cell"><div class="number">3</div><input id="r5c1" class="letter"></div>
+<div class="cell"><input id="r5c2" class="letter"></div>
+<div class="cell"><input id="r5c3" class="letter"></div>
+<div class="cell"><input id="r5c4" class="letter"></div>
+<div class="cell"><input id="r5c5" class="letter"></div>
+<div class="cell"><input id="r5c6" class="letter"></div>
+<div class="cell"><input id="r5c7" class="letter"></div>
 <div class="cell black"></div>
 
 </div>
@@ -156,11 +170,21 @@ h1{
 
 <h2>Orizzontali</h2>
 
-<p><strong>1.</strong> Il sentimento che provo per te (5)</p>
+<p><strong>1.</strong> Una persona che ha avuto un ruolo nell'inizio di questa storia (6)</p>
 
 <p><strong>2.</strong> Luogo di tante risate e serate (3)</p>
 
-<p><strong>3.</strong> Una città che ci è rimasta nel cuore (6)</p>
+<p><strong>3.</strong> Una città che ci è rimasta nel cuore (7)</p>
+
+<hr>
+
+<h2>Verticali</h2>
+
+<p><strong>1.</strong> Tre lettere che significano molto più di quanto sembri (3)</p>
+
+<p><strong>2.</strong> Un mese che custodisce un ricordo importante (8)</p>
+
+<p><strong>3.</strong> Il mese della prossima avventura (7)</p>
 
 <button id="verifyBtn" onclick="checkCrossword()">
 Verifica
@@ -256,29 +280,31 @@ return document
 
 function checkCrossword(){
 
-const amore =
-value("a1")+
-value("a2")+
-value("a3")+
-value("a4")+
-value("a5");
+const marika =
+value("r1c1")+
+value("r1c2")+
+value("r1c3")+
+value("r1c4")+
+value("r1c5")+
+value("r1c6");
 
 const pub =
-value("b1")+
-value("b2")+
-value("b3");
+value("r3c1")+
+value("r3c2")+
+value("r3c3");
 
 const matera =
-value("c1")+
-value("c2")+
-value("c3")+
-value("c4")+
-value("c5")+
-value("c6");
+value("r5c1")+
+value("r5c2")+
+value("r5c3")+
+value("r5c4")+
+value("r5c5")+
+value("r5c6")+
+value("r5c7");
 
 if(
 
-amore==="AMORE" &&
+marika==="MARIKA" &&
 pub==="PUB" &&
 matera==="MATERA"
 
@@ -289,7 +315,7 @@ document.getElementById("success")
 
 }else{
 
-alert("Qualche risposta non è corretta ❤️");
+alert("Controlla meglio le risposte ❤️");
 
 }
 
