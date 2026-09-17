@@ -1,34 +1,25 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>L'Enigma del Compleanno ❤️</title>
+
+<title>Il Cruciverba del Compleanno ❤️</title>
 
 <style>
 
-*{
-    box-sizing:border-box;
-}
-
 body{
-    margin:0;
-    font-family:'Segoe UI',sans-serif;
-    background:linear-gradient(135deg,#fff4f7,#ffe6ee);
+    font-family:Segoe UI,sans-serif;
+    background:#fff6f8;
+    padding:20px;
     color:#333;
 }
 
 .container{
-    max-width:1400px;
+    max-width:1200px;
     margin:auto;
-    padding:30px;
-}
-
-.card{
-    background:white;
-    border-radius:25px;
-    padding:30px;
-    box-shadow:0 15px 35px rgba(0,0,0,.15);
 }
 
 h1{
@@ -36,705 +27,222 @@ h1{
     color:#b0004f;
 }
 
-.intro{
-    text-align:center;
-    color:#555;
-    margin-bottom:25px;
-    line-height:1.6;
+.game{
+    display:flex;
+    flex-wrap:wrap;
+    gap:40px;
+    justify-content:center;
 }
 
-.grid{
+.crossword{
     display:grid;
-    grid-template-columns:repeat(25, 34px);
-    justify-content:center;
+    grid-template-columns:repeat(8,50px);
     gap:2px;
-    margin:30px 0;
 }
 
 .cell{
-    width:34px;
-    height:34px;
-    font-size:16px;
-    transition:.15s;
-    background:white;
-    border:1px solid #ddd;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-weight:bold;
-    cursor:pointer;
-    user-select:none;
-    border-radius:5px;
+
+
+width:50px;
+height:50px;
+
+border:1px solid #ccc;
+
+position:relative;
+
+background:white;
 }
 
-.cell:hover{
-    background:#ffe6ee;
+.cell.black{
+background:black;
 }
 
-.selected{
-background:#ff9ec2 !important;
-color:white;
-transform:scale(1.08);
+.cell input{
+
+width:100%;
+height:100%;
+
+border:none;
+
+text-align:center;
+
+font-size:22px;
+
+text-transform:uppercase;
+
+outline:none;
+
 }
 
-.found{
-    background:#6ed46e !important;
-    color:white;
+.number{
+
+position:absolute;
+
+top:2px;
+left:4px;
+
+font-size:10px;
+font-weight:bold;
+
+color:#666;
+
 }
 
-.words{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-    gap:10px;
+.clues{
+
+max-width:450px;
+
 }
 
-.word{
-    background:#f8f8f8;
-    border-radius:12px;
-    padding:12px;
+.clues h2{
+
+color:#b0004f;
+
 }
 
-.done{
-    background:#6ed46e !important;
-    color:white;
+.correct{
+
+background:#c8f7c8 !important;
+
 }
 
-.progress-wrap{
-    margin:25px 0;
-}
+#success{
 
-.progress-bg{
-    height:28px;
-    background:#ececec;
-    border-radius:100px;
-    overflow:hidden;
-}
+display:none;
 
-.progress{
-    height:100%;
-    width:0%;
-    background:#b0004f;
-    transition:.5s;
-}
+margin-top:30px;
 
-.counter{
-    text-align:center;
-    margin-top:10px;
-    font-weight:bold;
-}
+text-align:center;
 
-.secret{
-    display:none;
-    text-align:center;
-    margin-top:40px;
-}
+font-size:2rem;
 
-.secret h2{
-    font-size:3rem;
-    color:#b0004f;
-}
+color:#b0004f;
 
-button{
-    background:#b0004f;
-    color:white;
-    border:none;
-    padding:15px 25px;
-    border-radius:12px;
-    cursor:pointer;
-    font-size:1rem;
-}
-
-button:hover{
-    opacity:.9;
-}
-
-.message{
-    margin-top:20px;
-    font-size:1.2rem;
-    line-height:1.8;
-}
-
-#secretTitle{
-animation:fadeUp .8s ease;
-}
-
-@keyframes fadeUp{
-
-from{
-opacity:0;
-transform:translateY(20px);
-}
-
-to{
-opacity:1;
-transform:translateY(0);
-}
+font-weight:bold;
 
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-<div class="card">
+<h1>❤️ Il Cruciverba del Compleanno ❤️</h1>
 
-<h1>❤️ L'Enigma del Compleanno ❤️</h1>
+<div class="game">
 
-<div class="intro">
+<div class="crossword">
 
-❤️ Benvenuta piccola Mia ❤️
+<!-- riga 1 -->
 
-Davanti a te ci sono parole, ricordi, persone e luoghi
+<div class="cell">
+<div class="number">1</div>
+<input id="a1">
+</div>
 
-Alcuni hanno fatto parte della nostra storia. Altri servono soltanto a confonderti.
+<div class="cell">
+<input id="a2">
+</div>
 
-Trova gli indizi nascosti nella griglia.
+<div class="cell">
+<input id="a3">
+</div>
 
-Quando li avrai scoperti tutti, il tuo regalo verrà finalmente svelato.
+<div class="cell">
+<input id="a4">
+</div>
+
+<div class="cell">
+<input id="a5">
+</div>
+
+<div class="cell black"></div>
+<div class="cell black"></div>
+<div class="cell black"></div>
+
+<!-- riga 2 -->
+
+<div class="cell">
+<div class="number">2</div>
+<input id="b1">
+</div>
+
+<div class="cell">
+<input id="b2">
+</div>
+
+<div class="cell">
+<input id="b3">
+</div>
+
+<div class="cell black"></div>
+<div class="cell black"></div>
+<div class="cell black"></div>
+<div class="cell black"></div>
+<div class="cell black"></div>
+
+<!-- riga 3 -->
+
+<div class="cell">
+<div class="number">3</div>
+<input id="c1">
+</div>
+
+<div class="cell">
+<input id="c2">
+</div>
+
+<div class="cell">
+<input id="c3">
+</div>
+
+<div class="cell">
+<input id="c4">
+</div>
+
+<div class="cell">
+<input id="c5">
+</div>
+
+<div class="cell">
+<input id="c6">
+</div>
+
+<div class="cell black"></div>
+<div class="cell black"></div>
 
 </div>
 
-<div class="grid" id="grid"></div>
+<div class="clues">
 
-<h2>Indizi</h2>
+<h2>Orizzontali</h2>
 
-<div class="words" id="wordList"></div>
+<p>
+<strong>1.</strong>
+Il sentimento che provo per te (5)
+</p>
 
-<div class="progress-wrap">
+<p>
+<strong>2.</strong>
+Luogo di tante risate e serate (3)
+</p>
 
-<div class="progress-bg">
-<div class="progress" id="progress"></div>
-</div>
+<p>
+<strong>3.</strong>
+Una città che ci è rimasta nel cuore (6)
+</p>
 
-<div class="counter" id="counter">
-0 / 10 indizi risolti
-</div>
+<hr>
 
-</div>
+<h2>Soluzioni attese</h2>
 
-<div class="secret" id="secret">
+<ul>
+<li>AMORE</li>
+<li>PUB</li>
+<li>MATERA</li>
+</ul>
 
-<h2 id="secretTitle">✨</h2>
-
-<button onclick="revealNext()">
-Apri il prossimo indizio
-</button>
-
-<div class="message" id="secretMessage"></div>
-
-</div>
-
-</div>
-
-</div>
-
-<script>
-
-const importantWords = [
-
-"MARIKA",
-"ILA",
-"PUB",
-"DICEMBRE",
-"MATERA",
-"NOCCIOLA",
-"GIOIAVITAE",
-"CAVALIERPEPE",
-"OTTOBRE",
-"WEEKEND"
-
-];
-
-const fakeWords = [
-
-"BORGO",
-"CALICE",
-"VIGNA",
-"VALIGIA",
-"BRINDISI",
-"TRAMONTO",
-"STELLE",
-"COLLINA",
-"EMOZIONE",
-"RISATA",
-"RICORDO",
-"DESTINAZIONE",
-"SENTIERO",
-"RELAX",
-"AVVENTURA",
-"SAPORE",
-"FELICITA",
-"INCONTRO",
-"MUSICA",
-"PROFUMO",
-"CAREZZA",
-"CUORE",
-"VIAGGIO",
-"SOLE",
-"FOTOGRAFIA",
-"STRADA",
-"SERENITA",
-"COMPLICITA",
-"ABBRACCIO",
-"MEMORIA"
-
-];
-
-const clues = [
-
-{
-word:"MARIKA",
-clue:"Una persona che, senza volerlo, ha avuto un ruolo nell'inizio di questa storia."
-},
-
-{
-word:"ILA",
-clue:"Tre lettere che significano molto più di quanto sembri."
-},
-
-{
-word:"PUB",
-clue:"Un luogo dove il tempo è passato più velocemente del previsto."
-},
-
-{
-word:"DICEMBRE",
-clue:"Un mese che custodisce un ricordo speciale."
-},
-
-{
-word:"MATERA",
-clue:"Una città che continua a far parlare il cuore."
-},
-
-{
-word:"NOCCIOLA",
-clue:"Un sapore che richiama immediatamente qualcuno."
-},
-
-{
-word:"GIOIAVITAE",
-clue:"Una destinazione che ancora non conosci."
-},
-
-{
-word:"CAVALIERPEPE",
-clue:"Tra colline e vigneti si trova una parte della risposta."
-},
-
-{
-word:"OTTOBRE",
-clue:"Il mese in cui accadrà qualcosa di speciale."
-},
-
-{
-word:"WEEKEND",
-clue:"La parola che collega tutti gli indizi."
-}
-
-];
-
-const allWords = [...importantWords, ...fakeWords];
-
-const SIZE = 25;
-
-const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-const directions = [
-
-[1,0],
-[-1,0],
-
-[0,1],
-[0,-1],
-
-[1,1],
-[-1,-1],
-
-[1,-1],
-[-1,1]
-
-];
-
-const board = Array.from(
-{length:SIZE},
-()=>Array(SIZE).fill("")
-);
-
-function placeWord(word){
-
-let placed = false;
-
-while(!placed){
-
-const dir =
-directions[
-Math.floor(
-Math.random()*directions.length
-)
-];
-
-const row =
-Math.floor(Math.random()*SIZE);
-
-const col =
-Math.floor(Math.random()*SIZE);
-
-let valid = true;
-
-for(let i=0;i<word.length;i++){
-
-const r=row+dir[0]*i;
-const c=col+dir[1]*i;
-
-if(
-r<0 ||
-c<0 ||
-r>=SIZE ||
-c>=SIZE
-){
-valid=false;
-break;
-}
-
-if(
-board[r][c]!=="" &&
-board[r][c]!==word[i]
-){
-valid=false;
-break;
-}
-
-}
-
-if(valid){
-
-for(let i=0;i<word.length;i++){
-
-const r=row+dir[0]*i;
-const c=col+dir[1]*i;
-
-board[r][c]=word[i];
-
-}
-
-placed=true;
-
-}
-
-}
-
-}
-
-allWords.forEach(placeWord);
-
-for(let r=0;r<SIZE;r++){
-
-for(let c=0;c<SIZE;c++){
-
-if(board[r][c]===""){
-
-board[r][c]=
-alphabet[
-Math.floor(
-Math.random()*alphabet.length
-)
-];
-
-}
-
-}
-
-}
-
-const grid =
-document.getElementById("grid");
-
-document.addEventListener(
-"mouseup",
-()=>{
-if(isSelecting){
-
-isSelecting = false;
-
-updateSelection();
-
-}
-});
-
-document.addEventListener(
-"touchend",
-()=>{
-updateSelection();
-});
-
-board.forEach(row=>{
-
-row.forEach(letter=>{
-
-const cell=document.createElement("div");
-
-cell.className="cell";
-
-cell.textContent=letter;
-
-cell.dataset.letter=letter;
-
-cell.addEventListener("mousedown",()=>{
-
-if(cell.classList.contains("found"))
-return;
-
-isSelecting = true;
-
-cell.classList.add("selected");
-
-});
-
-cell.addEventListener("mouseenter",()=>{
-
-if(
-isSelecting &&
-!cell.classList.contains("found")
-){
-cell.classList.add("selected");
-}
-
-});
-
-cell.addEventListener("touchstart",(e)=>{
-
-if(cell.classList.contains("found"))
-return;
-
-cell.classList.add("selected");
-
-});
-
-cell.addEventListener("touchmove",(e)=>{
-
-const touch =
-e.touches[0];
-
-const element =
-document.elementFromPoint(
-touch.clientX,
-touch.clientY
-);
-
-if(
-element &&
-element.classList.contains("cell") &&
-!element.classList.contains("found")
-){
-element.classList.add("selected");
-}
-
-});
-
-grid.appendChild(cell);
-
-});
-
-});
-
-const wordList =
-document.getElementById("wordList");
-
-clues.forEach(clue=>{
-
-const div=document.createElement("div");
-
-div.className="word";
-
-div.id=clue.word;
-
-div.innerHTML=
-"<strong>?</strong> " +
-clue.clue;
-
-wordList.appendChild(div);
-
-});
-
-let selected = [];
-let foundWords = [];
-
-let isSelecting = false;
-
-function updateSelection(){
-
-selected =
-[
-...document.querySelectorAll(".selected")
-];
-
-const word =
-selected.map(
-x=>x.dataset.letter
-).join('');
-
-const reverse =
-word.split('').reverse().join('');
-
-let matched = false;
-
-importantWords.forEach(target=>{
-
-if(
-word===target ||
-reverse===target
-){
-
-matched = true;
-
-foundWord(target);
-
-}
-
-});
-
-if(!matched){
-
-setTimeout(()=>{
-
-document
-.querySelectorAll(".selected")
-.forEach(cell=>{
-
-if(
-!cell.classList.contains("found")
-){
-cell.classList.remove("selected");
-}
-
-});
-
-},300);
-
-}
-
-}
-
-function foundWord(word){
-
-if(foundWords.includes(word))
-return;
-
-foundWords.push(word);
-
-document
-.getElementById(word)
-.classList
-.add("done");
-
-selected.forEach(c=>{
-
-c.classList.remove("selected");
-c.classList.add("found");
-
-});
-
-updateProgress();
-
-}
-
-function updateProgress(){
-
-const percentage =
-(
-foundWords.length /
-importantWords.length
-)*100;
-
-document
-.getElementById("progress")
-.style.width =
-percentage + "%";
-
-document
-.getElementById("counter")
-.innerText =
-foundWords.length +
-" / " +
-importantWords.length +
-" indizi risolti";
-
-if(
-foundWords.length===
-importantWords.length
-){
-
-document
-.getElementById("secret")
-.style.display =
-"block";
-
-}
-
-}
-
-const secretSteps = [
-
-"❤️ COMPLIMENTI ❤️",
-
-"PREPARA",
-
-"LA",
-
-"VALIGIA",
-
-"🗓 10 - 11 OTTOBRE",
-
-"📍 GIOIA VITAE",
-
-"🍷 DEGUSTAZIONE",
-
-"🍇 TENUTA CAVALIER PEPE",
-
-"🏡 WEEKEND ROMANTICO PER DUE",
-
-"❤️ BUON COMPLEANNO AMORE ❤️"
-
-];
-
-let currentStep = 0;
-
-function revealNext(){
-
-document
-.getElementById("secretTitle")
-.innerHTML =
-secretSteps[currentStep];
-
-currentStep++;
-
-if(
-currentStep >=
-secretSteps.length
-){
-
-document
-.getElementById("secretMessage")
-.innerHTML =
-
-`
-Hai attraversato ricordi,
-persone, luoghi e piccoli indizi.
-
-Adesso è il momento di crearne uno nuovo.
-
-❤️
-`;
-
-}
-
-}
-
-</script>
-
-</body>
-</html>
+<button
