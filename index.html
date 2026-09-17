@@ -214,56 +214,17 @@ matrix.forEach((row,rowIndex)=>{
 
 row.split('').forEach((char,colIndex)=>{
 
-const cells = {};
+const cell =
+document.createElement("div");
 
-document
-.querySelectorAll(".cell input")
-.forEach(input=>{
+if(char==="#"){
 
-const key =
-input.dataset.row +
-"-" +
-input.dataset.col;
-
-cells[key]=input;
-
-});
-    
-function moveToNextCell(input){
-
-const row =
-parseInt(input.dataset.row);
-
-const col =
-parseInt(input.dataset.col);
-
-const direction =
-input.dataset.direction;
-
-let nextKey;
-
-if(direction==="across"){
-
-nextKey =
-row + "-" + (col+1);
+cell.className="black";
 
 }else{
 
-nextKey =
-(row+1) + "-" + col;
+cell.className="cell";
 
-}
-
-if(cells[nextKey]){
-
-cells[nextKey].focus();
-
-cells[nextKey].dataset.direction =
-direction;
-
-}
-
-}
 const input =
 document.createElement("input");
 
@@ -274,6 +235,15 @@ input.dataset.row = rowIndex;
 input.dataset.col = colIndex;
 input.dataset.direction = "across";
 
+input.addEventListener("click",()=>{
+
+input.dataset.direction =
+input.dataset.direction === "across"
+? "down"
+: "across";
+
+});
+
 input.addEventListener("input",()=>{
 
 input.value =
@@ -281,11 +251,73 @@ input.value
 .toUpperCase()
 .substring(0,1);
 
-if(input.value){
+checkAllFilled();
 
-moveToNextCell(input);
+});
+
+const numbers = {
+
+"0-4":1,   // SALERNO
+
+"1-3":2,   // MARIKA
+
+"2-6":3,   // ILA
+
+"2-9":4,   // AMORE
+
+"3-1":5,   // VALIGIA
+
+"2-9":6,   // MISS
+
+"4-0":7,   // MATERA
+
+"6-1":8,   // MINNIE
+
+"10-1":9,  // CALICE
+
+"10-5":10, // COLLINE
+
+"10-9":11, // PUB
+
+"10-13":12,// RELAX
+
+"13-0":13, // VINO
+
+"13-3":14, // DICEMBRE
+
+"15-0":15, // NOCCIOTELLA
+
+"17-3":16  // WEEKEND
+
+};
+
+
+const key =
+rowIndex + "-" + colIndex;
+
+if(numbers[key]){
+
+const number =
+document.createElement("div");
+
+number.className="number";
+
+number.textContent =
+numbers[key];
+
+cell.appendChild(number);
 
 }
+
+cell.appendChild(input);
+
+}
+
+crossword.appendChild(cell);
+
+});
+
+});
 
 checkAllFilled();
 
