@@ -166,19 +166,6 @@ Hai trovato il primo indizio.
 
 <script>
 
-function checkAllFilled(){
-
-const inputs =
-document.querySelectorAll(".letter");
-
-let complete = true;
-
-inputs.forEach(input=>{
-
-if(input.value.trim()===""){
-complete = false;
-}
-
 });
 
 document.getElementById("verifyBtn").style.display =
@@ -240,8 +227,6 @@ checkAllFilled();
 
 });
 
-cell.appendChild(input);
-
 
 cell.appendChild(input);
 
@@ -272,22 +257,6 @@ document.getElementById("verifyBtn").style.display =
 complete ? "inline-block" : "none";
 
 }
-
-});
-
-input.addEventListener("keydown",(e)=>{
-
-if(
-e.key==="Backspace" &&
-input.value==="" &&
-index > 0
-){
-letters[index-1].focus();
-}
-
-});
-
-});
 
 function checkCrossword(){
 
