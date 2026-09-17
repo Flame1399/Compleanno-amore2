@@ -58,7 +58,11 @@ h1{
 }
 
 .black{
-    background:#000000;
+    background:transparent;
+}
+
+.black.internal{
+    background:#000;
 }
 
 .cell input{
@@ -241,9 +245,27 @@ matrix.forEach((row,rowIndex)=>{
 
         if(char === "#"){
 
-            cell.className = "black";
+    cell.className = "black";
 
-        }else{
+    const left =
+        colIndex > 0
+        ? row[colIndex - 1]
+        : "#";
+
+    const right =
+        colIndex < row.length - 1
+        ? row[colIndex + 1]
+        : "#";
+
+    /*
+    La casella diventa nera visibile soltanto
+    quando separa due parti effettive della griglia.
+    */
+    if(left !== "#" || right !== "#"){
+        cell.classList.add("internal");
+    }
+
+}else{
 
             cell.className = "cell";
 
