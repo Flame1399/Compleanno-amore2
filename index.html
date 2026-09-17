@@ -8,31 +8,38 @@
 
 <style>
 
+/* =========================
+   BASE PAGINA
+   ========================= */
+
+*{
+    box-sizing:border-box;
+}
+
 body{
-    font-family:Segoe UI,sans-serif;
+    font-family:"Segoe UI",sans-serif;
     background:#fff6f8;
+    margin:0;
     padding:20px;
     color:#333;
 }
 
 .container{
+    width:100%;
     max-width:1200px;
-    margin:auto;
+    margin:0 auto;
 }
 
 h1{
     text-align:center;
     color:#b0004f;
-}
-.cell input.word-active{
-    background:#fff0f5;
+    margin:10px 0 30px;
 }
 
-.cell input.current-cell{
-    background:#ffc9dc;
-    box-shadow:inset 0 0 0 2px #b0004f;
-}
 
+/* =========================
+   AREA GIOCO
+   ========================= */
 
 .game{
     display:flex;
@@ -42,22 +49,36 @@ h1{
     flex-wrap:wrap;
 }
 
+.game.completed{
+    opacity:.15;
+    filter:blur(2px);
+    pointer-events:none;
+    transition:
+        opacity .8s ease,
+        filter .8s ease;
+}
+
+
+/* =========================
+   CRUCIVERBA
+   ========================= */
+
 .crossword{
     display:grid;
     grid-template-columns:repeat(12,35px);
     grid-template-rows:repeat(15,35px);
     gap:0;
-    padding:0;
-    margin:0;
     width:420px;
     height:525px;
+    padding:0;
+    margin:0;
     background:#000;
     border:2px solid #000;
+    flex-shrink:0;
 }
 
 .cell,
 .black{
-    box-sizing:border-box;
     width:35px;
     height:35px;
     margin:0;
@@ -66,36 +87,74 @@ h1{
 
 .cell{
     position:relative;
-    background:#ffffff;
+    background:#fff;
     border:1px solid #999;
 }
 
 .black{
-    background:#000000;
+    background:#000;
 }
+
+
+/* =========================
+   LETTERE
+   ========================= */
+
 .cell input{
+    display:block;
     width:100%;
     height:100%;
+    padding:0;
+    margin:0;
     border:none;
     outline:none;
-    text-align:center;
-    font-size:24px;
-    font-weight:bold;
-    text-transform:uppercase;
     background:transparent;
+    text-align:center;
+    text-transform:uppercase;
+    font-family:inherit;
+    font-size:24px;
+    font-weight:700;
+    color:#333;
 }
+
+
+/* Parola selezionata */
+
+.cell input.word-active{
+    background:#fff0f5;
+}
+
+
+/* Casella corrente */
+
+.cell input.current-cell{
+    background:#ffc9dc;
+    box-shadow:
+        inset 0 0 0 2px #b0004f;
+}
+
+
+/* =========================
+   NUMERAZIONE
+   ========================= */
 
 .number{
     position:absolute;
     top:2px;
     left:2px;
-    font-size:8px;
-    line-height:8px;
-    font-weight:bold;
-    color:#555;
     z-index:10;
     pointer-events:none;
+
+    font-size:8px;
+    line-height:8px;
+    font-weight:700;
+    color:#555;
 }
+
+
+/* =========================
+   DEFINIZIONI
+   ========================= */
 
 .clues{
     width:560px;
@@ -115,29 +174,32 @@ h1{
 
 .clue-section h2{
     color:#b0004f;
-    margin-top:0;
-    margin-bottom:16px;
+    font-size:24px;
+    margin:0 0 16px;
 }
 
 .clue-section p{
     font-size:15px;
     line-height:1.35;
-    margin:0 0 12px 0;
+    margin:0 0 12px;
 }
 
 .clue-section strong{
     color:#222;
 }
 
-.clues h2{
-    color:#b0004f;
-}
+
+/* Definizione cliccabile */
+
 .clue{
     cursor:pointer;
     padding:6px 8px;
     margin-left:-8px !important;
     border-radius:8px;
-    transition:background .15s ease, color .15s ease;
+
+    transition:
+        background .15s ease,
+        color .15s ease;
 }
 
 .clue:hover{
@@ -148,26 +210,34 @@ h1{
     background:#ffc9dc;
     color:#8d003e;
 }
-.game.completed{
-    opacity:.15;
-    filter:blur(2px);
-    pointer-events:none;
-    transition:opacity .8s ease, filter .8s ease;
-}
+
+
+/* =========================
+   PULSANTE VERIFICA
+   ========================= */
 
 #verifyBtn{
     display:none;
+
     margin:25px auto 0;
     padding:14px 32px;
+
     border:none;
     border-radius:999px;
+
     background:#b0004f;
-    color:white;
+    color:#fff;
+
+    font-family:inherit;
     font-size:16px;
     font-weight:600;
     letter-spacing:.3px;
+
     cursor:pointer;
-    box-shadow:0 6px 18px rgba(176,0,79,.20);
+
+    box-shadow:
+        0 6px 18px rgba(176,0,79,.20);
+
     transition:
         transform .2s ease,
         background .2s ease,
@@ -177,213 +247,23 @@ h1{
 #verifyBtn:hover{
     background:#8d003f;
     transform:translateY(-2px);
-    box-shadow:0 8px 22px rgba(176,0,79,.28);
+
+    box-shadow:
+        0 8px 22px rgba(176,0,79,.28);
 }
 
 #verifyBtn:active{
     transform:translateY(0);
 }
+
+
+/* =========================
+   CONTROLLO RISPOSTE
+   ========================= */
+
 .cell input.wrong{
     background:#ffd6df !important;
-    color:#a40032;
-    animation:shake .35s ease;
-}
-
-.cell input.correct{
-    background:#dff5e4 !important;
-    color:#216b39;
-}
-
-@keyframes shake{
-    0%,100%{
-        transform:translateX(0);
-    }
-
-    25%{
-        transform:translateX(-3px);
-    }
-
-    75%{
-        transform:translateX(3px);
-    }
-}
-#checkMessage{
-    min-height:24px;
-    margin-top:12px;
-    text-align:center;
-    font-size:14px;
-    font-weight:600;
-    color:#b0004f;
-}
-
-    .game{
-        flex-direction:column;
-        align-items:center;
-        gap:25px;
-    }
-
-    .crossword{
-        grid-template-columns:repeat(12,29px);
-        grid-template-rows:repeat(15,29px);
-        width:348px;
-        height:435px;
-    }
-
-    .cell,
-    .black{
-        width:29px;
-        height:29px;
-    }
-
-    .cell input{
-        font-size:19px;
-    }
-
-    .number{
-        font-size:7px;
-        line-height:7px;
-        top:1px;
-        left:1px;
-    }
-
-    .clues{
-        width:100%;
-    }
-
-    .clue-columns{
-        grid-template-columns:1fr;
-        gap:10px;
-    }
-
-    .clue-section h2{
-        font-size:21px;
-        margin-bottom:10px;
-    }
-
-    .clue-section p{
-        font-size:14px;
-        line-height:1.35;
-        margin-bottom:7px;
-    }
-
-    .clue{
-        padding:7px 8px;
-        margin-left:0 !important;
-    }
-
-    #verifyBtn{
-        width:100%;
-        max-width:350px;
-        display:none;
-        margin:20px auto 0;
-    }
-
-    #success,
-    #reveal{
-        margin:25px auto 0;
-        padding:30px 18px;
-    }
-
-    #revealText{
-        font-size:26px;
-    }
-
-    #revealIcon{
-        font-size:50px;
-    }
-
-}
-#success,
-#reveal{
-    display:none;
-    max-width:700px;
-    margin:45px auto 0;
-    padding:40px 30px;
-    background:#fff;
-    border-radius:24px;
-    box-shadow:0 12px 35px rgba(0,0,0,.10);
-    text-align:center;
-    animation:fadeUp .7s ease;
-}
-
-#success h2{
-    color:#b0004f;
-    font-size:32px;
-    margin:10px 0 20px;
-}
-
-#success p{
-    max-width:520px;
-    margin:12px auto;
-    line-height:1.6;
-}
-
-.success-heart{
-    font-size:55px;
-}
-
-#revealBtn,
-#nextRevealBtn{
-    margin-top:25px;
-    padding:14px 30px;
-    border:0;
-    border-radius:999px;
-    background:#b0004f;
-    color:#fff;
-    font-size:16px;
-    font-weight:600;
-    cursor:pointer;
-    transition:.2s ease;
-}
-
-#revealBtn:hover,
-#nextRevealBtn:hover{
-    transform:scale(1.04);
-    background:#8d003f;
-}
-
-#revealIcon{
-    font-size:60px;
-    margin-bottom:12px;
-}
-
-#revealText{
-    color:#b0004f;
-    font-size:32px;
-    line-height:1.35;
-    font-weight:700;
-}
-
-@keyframes fadeUp{
-
-    from{
-        opacity:0;
-        transform:translateY(18px);
-    }
-
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-
-}
-@media (max-width: 600px){
-
-    body{
-        padding:8px;
-    }
-
-    .container{
-        width:100%;
-        max-width:100%;
-    }
-
-    h1{
-        font-size:22px;
-        margin:12px 0 20px;
-    }
-
-
+    
 </style>
 
 </head>
