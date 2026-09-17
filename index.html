@@ -38,7 +38,9 @@ h1{
     gap:0;
     line-height:0;
 }
-
+.black{
+    background:black;
+}
 
 .cell,
 .black{
@@ -186,19 +188,19 @@ const matrix = [
 
 "####S##########",
 "###MARIKA######",
-"##V#L#L#MISS###",
-"#MATERA#O######",
-"##L#R###R######",
-"#MINNIE#E######",
-"##G#O##########",
-"##I############",
-"#CALICE#P######",
-"#####C##U#R####",
-"V##DICEMBRE#L##",
-"I####C#######E#",
-"NOCCIOTELLA####",
-"O####L#####X###",
-"###WEEKEND#####"
+"##V#L#L#MISS##",
+"#MATERA#O#####",
+"##L#R###R#####",
+"#MINNIE#E#####",
+"##G#O#########",
+"##I###########",
+"#CALICE#P#####",
+"#####O##U#R###",
+"V##DICEMBRE###",
+"I####C#####L##",
+"NOCCIOTELLA###",
+"O####L#####X##",
+"###WEEKEND####"
 
 ];
 
@@ -301,7 +303,7 @@ function moveToNextCell(input){
 
     let nextKey;
 
-    if(input.dataset.direction === "across"){
+    if(currentDirection === "across"){
 
         nextKey =
         row + "-" + (col + 1);
@@ -320,11 +322,11 @@ function moveToNextCell(input){
     }
 
 }
-
+let currentDirection = "across";
 document
 .querySelectorAll(".cell input")
 .forEach(input=>{
-let currentDirection = "across";
+
    input.addEventListener("click",()=>{
 
 currentDirection =
