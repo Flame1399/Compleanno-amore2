@@ -34,17 +34,23 @@ h1{
 
 .crossword{
     display:grid;
-    grid-template-columns:repeat(8,55px);
-    gap:2px;
+    grid-template-columns:repeat(15,40px);
+    gap:1px;
+}
+
+.black{
+    width:40px;
+    height:40px;
+    background:black;
 }
 
 .cell{
-    width:55px;
-    height:55px;
+    width:40px;
+    height:40px;
+    background:white;
     border:1px solid #ccc;
     position:relative;
-    background:white;
-}
+}    
 
 .cell.black{
     background:black;
@@ -112,59 +118,7 @@ h1{
 
 <div class="game">
 
-<div class="crossword">
-
-<!-- RIGA 1 -->
-<div class="cell"><div class="number">1</div><input id="r1c1" class="letter"></div>
-<div class="cell"><input id="r1c2" class="letter"></div>
-<div class="cell"><input id="r1c3" class="letter"></div>
-<div class="cell"><input id="r1c4" class="letter"></div>
-<div class="cell"><input id="r1c5" class="letter"></div>
-<div class="cell"><input id="r1c6" class="letter"></div>
-<div class="cell black"></div>
-<div class="cell black"></div>
-
-<!-- RIGA 2 -->
-<div class="cell"><input id="r2c1" class="letter"></div>
-<div class="cell black"></div>
-<div class="cell black"></div>
-<div class="cell black"></div>
-<div class="cell black"></div>
-<div class="cell black"></div>
-<div class="cell black"></div>
-<div class="cell black"></div>
-
-<!-- RIGA 3 -->
-<div class="cell"><div class="number">2</div><input id="r3c1" class="letter"></div>
-<div class="cell"><input id="r3c2" class="letter"></div>
-<div class="cell"><input id="r3c3" class="letter"></div>
-<div class="cell black"></div>
-<div class="cell black"></div>
-<div class="cell black"></div>
-<div class="cell black"></div>
-<div class="cell black"></div>
-
-<!-- RIGA 4 -->
-<div class="cell"><input id="r4c1" class="letter"></div>
-<div class="cell"><input id="r4c2" class="letter"></div>
-<div class="cell"><input id="r4c3" class="letter"></div>
-<div class="cell"><input id="r4c4" class="letter"></div>
-<div class="cell"><input id="r4c5" class="letter"></div>
-<div class="cell"><input id="r4c6" class="letter"></div>
-<div class="cell black"></div>
-<div class="cell black"></div>
-
-<!-- RIGA 5 -->
-<div class="cell"><div class="number">3</div><input id="r5c1" class="letter"></div>
-<div class="cell"><input id="r5c2" class="letter"></div>
-<div class="cell"><input id="r5c3" class="letter"></div>
-<div class="cell"><input id="r5c4" class="letter"></div>
-<div class="cell"><input id="r5c5" class="letter"></div>
-<div class="cell"><input id="r5c6" class="letter"></div>
-<div class="cell"><input id="r5c7" class="letter"></div>
-<div class="cell black"></div>
-
-</div>
+<div class="crossword" id="crossword"></div>
 
 <div class="clues">
 
@@ -232,24 +186,62 @@ complete ? "inline-block" : "none";
 
 }
 
-const letters =
-document.querySelectorAll(".letter");
+const matrix = [
 
-letters.forEach((input,index)=>{
+"###############",
+"###MARIKA######",
+"#####L#########",
+"#####A#########",
+"##MATERA#######",
+"###############",
+"###DICEMBRE####",
+"###############",
+"##NOCCIOTELLA##",
+"###############",
+"###WEEKEND#####",
+"###############",
+"##IRPINIA######",
+"###############",
+"###############"
+
+];
+
+const crossword =
+document.getElementById("crossword");
+
+matrix.forEach(row=>{
+
+row.split('').forEach(char=>{
+
+const cell =
+document.createElement("div");
+
+if(char==="#"){
+
+cell.className="black";
+
+}else{
+
+cell.className="cell";
+
+const input =
+document.createElement("input");
 
 input.maxLength = 1;
 
-input.addEventListener("input",()=>{
+input.dataset.solution = char;
 
-input.value =
-input.value.toUpperCase();
+cell.appendChild(input);
 
-if(
-input.value &&
-index < letters.length - 1
-){
-letters[index+1].focus();
 }
+
+crossword.appendChild(cell);
+
+});
+
+});
+
+matrix.forEach(...)    
 
 checkAllFilled();
 
@@ -280,47 +272,36 @@ return document
 
 function checkCrossword(){
 
-const marika =
-value("r1c1")+
-value("r1c2")+
-value("r1c3")+
-value("r1c4")+
-value("r1c5")+
-value("r1c6");
+const inputs =
+document.querySelectorAll(".cell input");
 
-const pub =
-value("r3c1")+
-value("r3c2")+
-value("r3c3");
+let ok = true;
 
-const matera =
-value("r5c1")+
-value("r5c2")+
-value("r5c3")+
-value("r5c4")+
-value("r5c5")+
-value("r5c6")+
-value("r5c7");
+inputs.forEach(input=>{
 
 if(
-
-marika==="MARIKA" &&
-pub==="PUB" &&
-matera==="MATERA"
-
+input.value.toUpperCase() !==
+input.dataset.solution
 ){
+ok = false;
+}
+
+});
+
+if(ok){
 
 document.getElementById("success")
 .style.display="block";
 
 }else{
 
-alert("Controlla meglio le risposte ❤️");
+alert(
+"Qualche risposta non è corretta ❤️"
+);
 
 }
 
 }
-
 </script>
 
 </body>
