@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -11,7 +9,7 @@
 <style>
 
 body{
-    font-family:'Segoe UI',sans-serif;
+    font-family:Segoe UI,sans-serif;
     background:#fff6f8;
     padding:20px;
     color:#333;
@@ -25,14 +23,13 @@ body{
 h1{
     text-align:center;
     color:#b0004f;
-    margin-bottom:30px;
 }
 
 .game{
     display:flex;
-    flex-wrap:wrap;
-    gap:40px;
     justify-content:center;
+    gap:40px;
+    flex-wrap:wrap;
 }
 
 .crossword{
@@ -44,7 +41,7 @@ h1{
 .cell{
     width:55px;
     height:55px;
-    border:1px solid #ddd;
+    border:1px solid #ccc;
     position:relative;
     background:white;
 }
@@ -57,17 +54,12 @@ h1{
     width:100%;
     height:100%;
     border:none;
+    outline:none;
     text-align:center;
-    font-size:26px;
+    font-size:24px;
     font-weight:bold;
     text-transform:uppercase;
     background:transparent;
-    outline:none;
-    caret-color:#b0004f;
-}
-
-.cell input:focus{
-    background:#fff1f7;
 }
 
 .number{
@@ -80,75 +72,230 @@ h1{
 }
 
 .clues{
-    max-width:450px;
+    max-width:400px;
 }
 
 .clues h2{
     color:#b0004f;
 }
 
-.clues p{
-    line-height:1.6;
-}
-
 #verifyBtn{
-
-display:none;
-
-margin-top:20px;
-
-background:#b0004f;
-color:white;
-
-padding:15px 25px;
-
-border:none;
-
-border-radius:12px;
-
-cursor:pointer;
-
-font-size:16px;
-
-transition:0.3s;
-
-}
-
-#verifyBtn:hover{
-
-background:#8d003f;
-transform:scale(1.05);
-
+    display:none;
+    padding:15px 25px;
+    border:none;
+    border-radius:10px;
+    background:#b0004f;
+    color:white;
+    cursor:pointer;
 }
 
 #success{
-
-display:none;
-
-margin-top:40px;
-
-background:#fff1f7;
-
-padding:30px;
-
-border-radius:20px;
-
-text-align:center;
-
-color:#b0004f;
-
-font-size:1.8rem;
-
-font-weight:bold;
-
+    display:none;
+    margin-top:40px;
+    background:#fff1f7;
+    padding:30px;
+    border-radius:20px;
+    text-align:center;
+    color:#b0004f;
+    font-size:1.8rem;
+    font-weight:bold;
 }
 
 </style>
 
 </head>
-
 <body>
 
 <div class="container">
 
-<h1>
+<h1>❤️ L'ENIGMA DEL COMPLEANNO ❤️</h1>
+
+<div class="game">
+
+<div class="crossword">
+
+<!-- AMORE -->
+
+<div class="cell"><div class="number">1</div><input id="a1" class="letter"></div>
+<div class="cell"><input id="a2" class="letter"></div>
+<div class="cell"><input id="a3" class="letter"></div>
+<div class="cell"><input id="a4" class="letter"></div>
+<div class="cell"><input id="a5" class="letter"></div>
+
+<div class="cell black"></div>
+<div class="cell black"></div>
+<div class="cell black"></div>
+
+<!-- PUB -->
+
+<div class="cell"><div class="number">2</div><input id="b1" class="letter"></div>
+<div class="cell"><input id="b2" class="letter"></div>
+<div class="cell"><input id="b3" class="letter"></div>
+
+<div class="cell black"></div>
+<div class="cell black"></div>
+<div class="cell black"></div>
+<div class="cell black"></div>
+<div class="cell black"></div>
+
+<!-- MATERA -->
+
+<div class="cell"><div class="number">3</div><input id="c1" class="letter"></div>
+<div class="cell"><input id="c2" class="letter"></div>
+<div class="cell"><input id="c3" class="letter"></div>
+<div class="cell"><input id="c4" class="letter"></div>
+<div class="cell"><input id="c5" class="letter"></div>
+<div class="cell"><input id="c6" class="letter"></div>
+
+<div class="cell black"></div>
+<div class="cell black"></div>
+
+</div>
+
+<div class="clues">
+
+<h2>Orizzontali</h2>
+
+<p><strong>1.</strong> Il sentimento che provo per te (5)</p>
+
+<p><strong>2.</strong> Luogo di tante risate e serate (3)</p>
+
+<p><strong>3.</strong> Una città che ci è rimasta nel cuore (6)</p>
+
+<button id="verifyBtn" onclick="checkCrossword()">
+Verifica
+</button>
+
+</div>
+
+</div>
+
+<div id="success">
+
+❤️ COMPLIMENTI ❤️
+
+<br><br>
+
+Hai trovato il primo indizio.
+
+<br><br>
+
+✨ WEEKEND ✨
+
+</div>
+
+</div>
+
+<script>
+
+function checkAllFilled(){
+
+const inputs =
+document.querySelectorAll(".letter");
+
+let complete = true;
+
+inputs.forEach(input=>{
+
+if(input.value.trim()===""){
+complete = false;
+}
+
+});
+
+document.getElementById("verifyBtn").style.display =
+complete ? "inline-block" : "none";
+
+}
+
+const letters =
+document.querySelectorAll(".letter");
+
+letters.forEach((input,index)=>{
+
+input.maxLength = 1;
+
+input.addEventListener("input",()=>{
+
+input.value =
+input.value.toUpperCase();
+
+if(
+input.value &&
+index < letters.length - 1
+){
+letters[index+1].focus();
+}
+
+checkAllFilled();
+
+});
+
+input.addEventListener("keydown",(e)=>{
+
+if(
+e.key==="Backspace" &&
+input.value==="" &&
+index > 0
+){
+letters[index-1].focus();
+}
+
+});
+
+});
+
+function value(id){
+
+return document
+.getElementById(id)
+.value
+.toUpperCase();
+
+}
+
+function checkCrossword(){
+
+const amore =
+value("a1")+
+value("a2")+
+value("a3")+
+value("a4")+
+value("a5");
+
+const pub =
+value("b1")+
+value("b2")+
+value("b3");
+
+const matera =
+value("c1")+
+value("c2")+
+value("c3")+
+value("c4")+
+value("c5")+
+value("c6");
+
+if(
+
+amore==="AMORE" &&
+pub==="PUB" &&
+matera==="MATERA"
+
+){
+
+document.getElementById("success")
+.style.display="block";
+
+}else{
+
+alert("Qualche risposta non è corretta ❤️");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
