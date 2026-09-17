@@ -11,7 +11,7 @@
 <style>
 
 body{
-    font-family:Segoe UI,sans-serif;
+    font-family:'Segoe UI',sans-serif;
     background:#fff6f8;
     padding:20px;
     color:#333;
@@ -25,6 +25,7 @@ body{
 h1{
     text-align:center;
     color:#b0004f;
+    margin-bottom:30px;
 }
 
 .game{
@@ -36,73 +37,87 @@ h1{
 
 .crossword{
     display:grid;
-    grid-template-columns:repeat(8,50px);
+    grid-template-columns:repeat(8,55px);
     gap:2px;
 }
 
 .cell{
-
-
-width:50px;
-height:50px;
-
-border:1px solid #ccc;
-
-position:relative;
-
-background:white;
+    width:55px;
+    height:55px;
+    border:1px solid #ddd;
+    position:relative;
+    background:white;
 }
 
 .cell.black{
-background:black;
+    background:black;
 }
 
 .cell input{
+    width:100%;
+    height:100%;
+    border:none;
+    text-align:center;
+    font-size:26px;
+    font-weight:bold;
+    text-transform:uppercase;
+    background:transparent;
+    outline:none;
+    caret-color:#b0004f;
+}
 
-width:100%;
-height:100%;
-
-border:none;
-
-text-align:center;
-
-font-size:22px;
-
-text-transform:uppercase;
-
-outline:none;
-
+.cell input:focus{
+    background:#fff1f7;
 }
 
 .number{
-
-position:absolute;
-
-top:2px;
-left:4px;
-
-font-size:10px;
-font-weight:bold;
-
-color:#666;
-
+    position:absolute;
+    top:2px;
+    left:4px;
+    font-size:10px;
+    font-weight:bold;
+    color:#777;
 }
 
 .clues{
-
-max-width:450px;
-
+    max-width:450px;
 }
 
 .clues h2{
+    color:#b0004f;
+}
 
-color:#b0004f;
+.clues p{
+    line-height:1.6;
+}
+
+#verifyBtn{
+
+display:none;
+
+margin-top:20px;
+
+background:#b0004f;
+color:white;
+
+padding:15px 25px;
+
+border:none;
+
+border-radius:12px;
+
+cursor:pointer;
+
+font-size:16px;
+
+transition:0.3s;
 
 }
 
-.correct{
+#verifyBtn:hover{
 
-background:#c8f7c8 !important;
+background:#8d003f;
+transform:scale(1.05);
 
 }
 
@@ -110,13 +125,19 @@ background:#c8f7c8 !important;
 
 display:none;
 
-margin-top:30px;
+margin-top:40px;
+
+background:#fff1f7;
+
+padding:30px;
+
+border-radius:20px;
 
 text-align:center;
 
-font-size:2rem;
-
 color:#b0004f;
+
+font-size:1.8rem;
 
 font-weight:bold;
 
@@ -130,115 +151,4 @@ font-weight:bold;
 
 <div class="container">
 
-<h1>❤️ Il Cruciverba del Compleanno ❤️</h1>
-
-<div class="game">
-
-<div class="crossword">
-
-<!-- riga 1 -->
-
-<div class="cell">
-<div class="number">1</div>
-<input id="a1">
-</div>
-
-<div class="cell">
-<input id="a2">
-</div>
-
-<div class="cell">
-<input id="a3">
-</div>
-
-<div class="cell">
-<input id="a4">
-</div>
-
-<div class="cell">
-<input id="a5">
-</div>
-
-<div class="cell black"></div>
-<div class="cell black"></div>
-<div class="cell black"></div>
-
-<!-- riga 2 -->
-
-<div class="cell">
-<div class="number">2</div>
-<input id="b1">
-</div>
-
-<div class="cell">
-<input id="b2">
-</div>
-
-<div class="cell">
-<input id="b3">
-</div>
-
-<div class="cell black"></div>
-<div class="cell black"></div>
-<div class="cell black"></div>
-<div class="cell black"></div>
-<div class="cell black"></div>
-
-<!-- riga 3 -->
-
-<div class="cell">
-<div class="number">3</div>
-<input id="c1">
-</div>
-
-<div class="cell">
-<input id="c2">
-</div>
-
-<div class="cell">
-<input id="c3">
-</div>
-
-<div class="cell">
-<input id="c4">
-</div>
-
-<div class="cell">
-<input id="c5">
-</div>
-
-<div class="cell">
-<input id="c6">
-</div>
-
-<div class="cell black"></div>
-<div class="cell black"></div>
-
-</div>
-
-<div class="clues">
-
-<h2>Orizzontali</h2>
-
-<p>
-<strong>1.</strong>
-Il sentimento che provo per te (5)
-</p>
-
-<p>
-<strong>2.</strong>
-Luogo di tante risate e serate (3)
-</p>
-
-<p>
-<strong>3.</strong>
-Una città che ci è rimasta nel cuore (6)
-</p>
-
-<button
-id="verifyBtn"
-style="display:none"
-onclick="checkCrossword()"
->
-Verifica
-</button>
+<h1>
