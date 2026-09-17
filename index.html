@@ -235,19 +235,19 @@ input.dataset.row = rowIndex;
 input.dataset.col = colIndex;
 input.dataset.direction = "across";
 
-input.addEventListener("input",()=>{
+input.addEventListener("click",()=>{
 
-input.value =
-input.value.toUpperCase()
-.substring(0,1);
+if(
+input.dataset.direction === "across"
+){
 
-if(input.value){
+input.dataset.direction = "down";
 
-moveToNextCell(input);
+}else{
+
+input.dataset.direction = "across";
 
 }
-
-checkAllFilled();
 
 });
 
