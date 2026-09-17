@@ -232,15 +232,49 @@ input.maxLength = 1;
 
 input.dataset.solution = char;
 
+input.addEventListener("input",()=>{
+
+input.value =
+input.value
+.toUpperCase()
+.substring(0,1);
+
+if(input.value){
+
+const next =
+cell.nextElementSibling;
+
+if(
+next &&
+next.querySelector("input")
+){
+next.querySelector("input")
+.focus();
+}
+
+}
+
+checkAllFilled();
+
+});
+
 const numbers = {
-"1-0":1,
+
+"0-4":1,
 "1-3":2,
 "2-2":3,
-"3-1":4,
-"5-1":5,
-"8-1":6,
-"10-0":7,
-"12-0":8
+"2-8":4,
+"3-1":5,
+"5-1":6,
+"8-1":7,
+"10-0":8,
+"10-3":9,
+"10-11":10,
+"12-0":11,
+"13-5":12,
+"13-11":13,
+"14-3":14
+
 };
 
 const key = rowIndex + "-" + colIndex;
@@ -258,10 +292,6 @@ numbers[key];
 cell.appendChild(number);
 
 }
-
-checkAllFilled();
-
-});
 
 
 cell.appendChild(input);
