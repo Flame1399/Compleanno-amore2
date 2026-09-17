@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L'Enigma del Compleanno ❤️</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    background:linear-gradient(135deg,#fff4f7,#ffe6ee);
+    color:#333;
+}
+
+.container{
+    max-width:1400px;
+    margin:auto;
+    padding:30px;
+}
+
+.card{
+    background:white;
+    border-radius:25px;
+    padding:30px;
+    box-shadow:0 15px 35px rgba(0,0,0,.15);
+}
+
+h1{
+    text-align:center;
+    color:#b0004f;
+}
+
+.intro{
+    text-align:center;
+    color:#555;
+    margin-bottom:25px;
+    line-height:1.6;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(25, 34px);
+    justify-content:center;
+    gap:2px;
+    margin:30px 0;
+}
+
+.cell{
+    width:34px;
+    height:34px;
+    font-size:16px;
+    transition:.15s;
+    background:white;
+    border:1px solid #ddd;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-weight:bold;
+    cursor:pointer;
+    user-select:none;
+    border-radius:5px;
+}
+
+.cell:hover{
+    background:#ffe6ee;
+}
+
+.selected{
+background:#ff9ec2 !important;
+color:white;
+transform:scale(1.08);
+}
+
+.found{
+    background:#6ed46e !important;
+    color:white;
+}
+
+.words{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:10px;
+}
+
+.word{
+    background:#f8f8f8;
+    border-radius:12px;
+    padding:12px;
+}
+
+.done{
+    background:#6ed46e !important;
+    color:white;
+}
+
+.progress-wrap{
+    margin:25px 0;
+}
+
+.progress-bg{
+    height:28px;
+    background:#ececec;
+    border-radius:100px;
+    overflow:hidden;
+}
+
+.progress{
+    height:100%;
+    width:0%;
+    background:#b0004f;
+    transition:.5s;
+}
+
+.counter{
+    text-align:center;
+    margin-top:10px;
+    font-weight:bold;
+}
+
+.secret{
+    display:none;
+    text-align:center;
+    margin-top:40px;
+}
+
+.secret h2{
+    font-size:3rem;
+    color:#b0004f;
+}
+
+button{
+    background:#b0004f;
+    color:white;
+    border:none;
+    padding:15px 25px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:1rem;
+}
+
+button:hover{
+    opacity:.9;
+}
+
+.message{
+    margin-top:20px;
+    font-size:1.2rem;
+    line-height:1.8;
+}
+
+#secretTitle{
+animation:fadeUp .8s ease;
+}
+
+@keyframes fadeUp{
+
+from{
+opacity:0;
+transform:translateY(20px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<h1>❤️ L'Enigma del Compleanno ❤️</h1>
+
+<div class="intro">
+
+❤️ Benvenuta piccola Mia ❤️
+
+Davanti a te ci sono parole, ricordi, persone e luoghi
+
+Alcuni hanno fatto parte della nostra storia. Altri servono soltanto a confonderti.
+
+Trova gli indizi nascosti nella griglia.
+
+Quando li avrai scoperti tutti, il tuo regalo verrà finalmente svelato.
+
+</div>
+
+<div class="grid" id="grid"></div>
+
+<h2>Indizi</h2>
+
+<div class="words" id="wordList"></div>
+
+<div class="progress-wrap">
+
+<div class="progress-bg">
+<div class="progress" id="progress"></div>
+</div>
+
+<div class="counter" id="counter">
+0 / 10 indizi risolti
+</div>
+
+</div>
+
+<div class="secret" id="secret">
+
+<h2 id="secretTitle">✨</h2>
+
+<button onclick="revealNext()">
+Apri il prossimo indizio
+</button>
+
+<div class="message" id="secretMessage"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const importantWords = [
+
+"MARIKA",
+"ILA",
+"PUB",
+"DICEMBRE",
+"MATERA",
+"NOCCIOLA",
+"GIOIAVITAE",
+"CAVALIERPEPE",
+"OTTOBRE",
+"WEEKEND"
+
+];
+
+const fakeWords = [
+
+"BORGO",
+"CALICE",
+"VIGNA",
+"VALIGIA",
+"BRINDISI",
+"TRAMONTO",
+"STELLE",
+"COLLINA",
+"EMOZIONE",
+"RISATA",
+"RICORDO",
+"DESTINAZIONE",
+"SENTIERO",
+"RELAX",
+"AVVENTURA",
+"SAPORE",
+"FELICITA",
+"INCONTRO",
+"MUSICA",
+"PROFUMO",
+"CAREZZA",
+"CUORE",
+"VIAGGIO",
+"SOLE",
+"FOTOGRAFIA",
+"STRADA",
+"SERENITA",
+"COMPLICITA",
+"ABBRACCIO",
+"MEMORIA"
+
+];
+
+const clues = [
+
+{
+word:"MARIKA",
+clue:"Una persona che, senza volerlo, ha avuto un ruolo nell'inizio di questa storia."
+},
+
+{
+word:"ILA",
+clue:"Tre lettere che significano molto più di quanto sembri."
+},
+
+{
+word:"PUB",
+clue:"Un luogo dove il tempo è passato più velocemente del previsto."
+},
+
+{
+word:"DICEMBRE",
+clue:"Un mese che custodisce un ricordo speciale."
+},
+
+{
+word:"MATERA",
+clue:"Una città che continua a far parlare il cuore."
+},
+
+{
+word:"NOCCIOLA",
+clue:"Un sapore che richiama immediatamente qualcuno."
+},
+
+{
+word:"GIOIAVITAE",
+clue:"Una destinazione che ancora non conosci."
+},
+
+{
+word:"CAVALIERPEPE",
+clue:"Tra colline e vigneti si trova una parte della risposta."
+},
+
+{
+word:"OTTOBRE",
+clue:"Il mese in cui accadrà qualcosa di speciale."
+},
+
+{
+word:"WEEKEND",
+clue:"La parola che collega tutti gli indizi."
+}
+
+];
+
+const allWords = [...importantWords, ...fakeWords];
+
+const SIZE = 25;
+
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+const directions = [
+
+[1,0],
+[-1,0],
+
+[0,1],
+[0,-1],
+
+[1,1],
+[-1,-1],
+
+[1,-1],
+[-1,1]
+
+];
+
+const board = Array.from(
+{length:SIZE},
+()=>Array(SIZE).fill("")
+);
+
+function placeWord(word){
+
+let placed = false;
+
+while(!placed){
+
+const dir =
+directions[
+Math.floor(
+Math.random()*directions.length
+)
+];
+
+const row =
+Math.floor(Math.random()*SIZE);
+
+const col =
+Math.floor(Math.random()*SIZE);
+
+let valid = true;
+
+for(let i=0;i<word.length;i++){
+
+const r=row+dir[0]*i;
+const c=col+dir[1]*i;
+
+if(
+r<0 ||
+c<0 ||
+r>=SIZE ||
+c>=SIZE
+){
+valid=false;
+break;
+}
+
+if(
+board[r][c]!=="" &&
+board[r][c]!==word[i]
+){
+valid=false;
+break;
+}
+
+}
+
+if(valid){
+
+for(let i=0;i<word.length;i++){
+
+const r=row+dir[0]*i;
+const c=col+dir[1]*i;
+
+board[r][c]=word[i];
+
+}
+
+placed=true;
+
+}
+
+}
+
+}
+
+allWords.forEach(placeWord);
+
+for(let r=0;r<SIZE;r++){
+
+for(let c=0;c<SIZE;c++){
+
+if(board[r][c]===""){
+
+board[r][c]=
+alphabet[
+Math.floor(
+Math.random()*alphabet.length
+)
+];
+
+}
+
+}
+
+}
+
+const grid =
+document.getElementById("grid");
+
+document.addEventListener(
+"mouseup",
+()=>{
+if(isSelecting){
+
+isSelecting = false;
+
+updateSelection();
+
+}
+});
+
+document.addEventListener(
+"touchend",
+()=>{
+updateSelection();
+});
+
+board.forEach(row=>{
+
+row.forEach(letter=>{
+
+const cell=document.createElement("div");
+
+cell.className="cell";
+
+cell.textContent=letter;
+
+cell.dataset.letter=letter;
+
+cell.addEventListener("mousedown",()=>{
+
+if(cell.classList.contains("found"))
+return;
+
+isSelecting = true;
+
+cell.classList.add("selected");
+
+});
+
+cell.addEventListener("mouseenter",()=>{
+
+if(
+isSelecting &&
+!cell.classList.contains("found")
+){
+cell.classList.add("selected");
+}
+
+});
+
+cell.addEventListener("touchstart",(e)=>{
+
+if(cell.classList.contains("found"))
+return;
+
+cell.classList.add("selected");
+
+});
+
+cell.addEventListener("touchmove",(e)=>{
+
+const touch =
+e.touches[0];
+
+const element =
+document.elementFromPoint(
+touch.clientX,
+touch.clientY
+);
+
+if(
+element &&
+element.classList.contains("cell") &&
+!element.classList.contains("found")
+){
+element.classList.add("selected");
+}
+
+});
+
+grid.appendChild(cell);
+
+});
+
+});
+
+const wordList =
+document.getElementById("wordList");
+
+clues.forEach(clue=>{
+
+const div=document.createElement("div");
+
+div.className="word";
+
+div.id=clue.word;
+
+div.innerHTML=
+"<strong>?</strong> " +
+clue.clue;
+
+wordList.appendChild(div);
+
+});
+
+let selected = [];
+let foundWords = [];
+
+let isSelecting = false;
+
+function updateSelection(){
+
+selected =
+[
+...document.querySelectorAll(".selected")
+];
+
+const word =
+selected.map(
+x=>x.dataset.letter
+).join('');
+
+const reverse =
+word.split('').reverse().join('');
+
+let matched = false;
+
+importantWords.forEach(target=>{
+
+if(
+word===target ||
+reverse===target
+){
+
+matched = true;
+
+foundWord(target);
+
+}
+
+});
+
+if(!matched){
+
+setTimeout(()=>{
+
+document
+.querySelectorAll(".selected")
+.forEach(cell=>{
+
+if(
+!cell.classList.contains("found")
+){
+cell.classList.remove("selected");
+}
+
+});
+
+},300);
+
+}
+
+}
+
+function foundWord(word){
+
+if(foundWords.includes(word))
+return;
+
+foundWords.push(word);
+
+document
+.getElementById(word)
+.classList
+.add("done");
+
+selected.forEach(c=>{
+
+c.classList.remove("selected");
+c.classList.add("found");
+
+});
+
+updateProgress();
+
+}
+
+function updateProgress(){
+
+const percentage =
+(
+foundWords.length /
+importantWords.length
+)*100;
+
+document
+.getElementById("progress")
+.style.width =
+percentage + "%";
+
+document
+.getElementById("counter")
+.innerText =
+foundWords.length +
+" / " +
+importantWords.length +
+" indizi risolti";
+
+if(
+foundWords.length===
+importantWords.length
+){
+
+document
+.getElementById("secret")
+.style.display =
+"block";
+
+}
+
+}
+
+const secretSteps = [
+
+"❤️ COMPLIMENTI ❤️",
+
+"PREPARA",
+
+"LA",
+
+"VALIGIA",
+
+"🗓 10 - 11 OTTOBRE",
+
+"📍 GIOIA VITAE",
+
+"🍷 DEGUSTAZIONE",
+
+"🍇 TENUTA CAVALIER PEPE",
+
+"🏡 WEEKEND ROMANTICO PER DUE",
+
+"❤️ BUON COMPLEANNO AMORE ❤️"
+
+];
+
+let currentStep = 0;
+
+function revealNext(){
+
+document
+.getElementById("secretTitle")
+.innerHTML =
+secretSteps[currentStep];
+
+currentStep++;
+
+if(
+currentStep >=
+secretSteps.length
+){
+
+document
+.getElementById("secretMessage")
+.innerHTML =
+
+`
+Hai attraversato ricordi,
+persone, luoghi e piccoli indizi.
+
+Adesso è il momento di crearne uno nuovo.
+
+❤️
+`;
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
