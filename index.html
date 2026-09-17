@@ -231,6 +231,9 @@ document.createElement("input");
 input.maxLength = 1;
 
 input.dataset.solution = char;
+input.dataset.row = rowIndex;
+input.dataset.col = colIndex;
+input.dataset.direction = "across";
 
 input.addEventListener("input",()=>{
 
