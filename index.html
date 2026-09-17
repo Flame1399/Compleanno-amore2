@@ -231,6 +231,18 @@ input.maxLength = 1;
 
 input.dataset.solution = char;
 
+input.addEventListener("input",()=>{
+
+input.value =
+input.value.toUpperCase();
+
+checkAllFilled();
+
+});
+
+cell.appendChild(input);
+
+
 cell.appendChild(input);
 
 }
@@ -241,9 +253,25 @@ crossword.appendChild(cell);
 
 });
 
-matrix.forEach(...)    
+function checkAllFilled(){
 
-checkAllFilled();
+const inputs =
+document.querySelectorAll(".cell input");
+
+let complete = true;
+
+inputs.forEach(input=>{
+
+if(input.value.trim()===""){
+complete = false;
+}
+
+});
+
+document.getElementById("verifyBtn").style.display =
+complete ? "inline-block" : "none";
+
+}
 
 });
 
@@ -260,15 +288,6 @@ letters[index-1].focus();
 });
 
 });
-
-function value(id){
-
-return document
-.getElementById(id)
-.value
-.toUpperCase();
-
-}
 
 function checkCrossword(){
 
