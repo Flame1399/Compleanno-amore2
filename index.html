@@ -235,22 +235,12 @@ input.dataset.solution = char;
 input.addEventListener("input",()=>{
 
 input.value =
-input.value
-.toUpperCase()
+input.value.toUpperCase()
 .substring(0,1);
 
 if(input.value){
 
-const next =
-cell.nextElementSibling;
-
-if(
-next &&
-next.querySelector("input")
-){
-next.querySelector("input")
-.focus();
-}
+moveToNextCell(input);
 
 }
 
