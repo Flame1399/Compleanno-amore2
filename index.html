@@ -433,7 +433,108 @@ function chooseDirection(input, clickedAgain){
     }
 
 }
+function highlightActiveWord(input){
 
+    /* Pulisce la precedente evidenziazione */
+
+    document
+    .querySelectorAll(".cell input")
+    .forEach(cell => {
+
+        cell.classList.remove("word-active");
+        cell.classList.remove("current-cell");
+
+    });
+
+
+    const row =
+        parseInt(input.dataset.row);
+
+    const col =
+        parseInt(input.dataset.col);
+
+
+    let startRow = row;
+    let startCol = col;
+
+
+    /*
+     Trova l'inizio della parola
+    */
+
+    if(currentDirection === "across"){
+
+        while(
+            getCell(startRow, startCol - 1)
+        ){
+
+            startCol--;
+
+        }
+
+    }else{
+
+        while(
+            getCell(startRow - 1, startCol)
+        ){
+
+            startRow--;
+
+        }
+
+    }
+
+
+    /*
+     Evidenzia tutte le lettere
+     appartenenti alla parola
+    */
+
+    let currentRow = startRow;
+    let currentCol = startCol;
+
+    while(true){
+
+        const current =
+            getCell(
+                currentRow,
+                currentCol
+            );
+
+        if(!current){
+            break;
+        }
+
+        current.classList.add(
+            "word-active"
+        );
+
+
+        if(
+            currentDirection === "across"
+        ){
+
+            currentCol++;
+
+        }else{
+
+            currentRow++;
+
+        }
+
+    }
+
+
+    /*
+     Evidenzia maggiormente
+     la casella corrente
+    */
+
+    input.classList.add(
+        "current-cell"
+    );
+
+}
 
 /* Passa alla prima casella VUOTA successiva */
 
