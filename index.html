@@ -148,6 +148,12 @@ h1{
     background:#ffc9dc;
     color:#8d003e;
 }
+.game.completed{
+    opacity:.15;
+    filter:blur(2px);
+    pointer-events:none;
+    transition:opacity .8s ease, filter .8s ease;
+}
 
 #verifyBtn{
     display:none;
@@ -210,16 +216,79 @@ h1{
     color:#b0004f;
 }
 
-#success{
+#success,
+#reveal{
     display:none;
-    margin-top:40px;
-    background:#fff1f7;
-    padding:30px;
-    border-radius:20px;
+    max-width:700px;
+    margin:45px auto 0;
+    padding:40px 30px;
+    background:#fff;
+    border-radius:24px;
+    box-shadow:0 12px 35px rgba(0,0,0,.10);
     text-align:center;
+    animation:fadeUp .7s ease;
+}
+
+#success h2{
     color:#b0004f;
-    font-size:1.8rem;
-    font-weight:bold;
+    font-size:32px;
+    margin:10px 0 20px;
+}
+
+#success p{
+    max-width:520px;
+    margin:12px auto;
+    line-height:1.6;
+}
+
+.success-heart{
+    font-size:55px;
+}
+
+#revealBtn,
+#nextRevealBtn{
+    margin-top:25px;
+    padding:14px 30px;
+    border:0;
+    border-radius:999px;
+    background:#b0004f;
+    color:#fff;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+#revealBtn:hover,
+#nextRevealBtn:hover{
+    transform:scale(1.04);
+    background:#8d003f;
+}
+
+#revealIcon{
+    font-size:60px;
+    margin-bottom:12px;
+}
+
+#revealText{
+    color:#b0004f;
+    font-size:32px;
+    line-height:1.35;
+    font-weight:700;
+}
+
+@keyframes fadeUp{
+
+    from{
+        opacity:0;
+        transform:translateY(18px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
 }
 
 </style>
@@ -325,18 +394,36 @@ h1{
 </div>
 
 </div>
-
 <div id="success">
 
-❤️ COMPLIMENTI ❤️
+    <div class="success-heart">❤️</div>
 
-<br><br>
+    <h2>COMPLIMENTI</h2>
 
-Hai trovato il primo indizio.
+    <p>
+        Hai risolto tutti gli indizi.
+    </p>
 
-<br><br>
+    <p>
+        Ma forse avrai notato che alcune di queste parole
+        non erano qui per caso...
+    </p>
 
-✨ WEEKEND ✨
+    <button id="revealBtn" onclick="startReveal()">
+    Scopri cosa ti aspetta ❤️
+</button>
+</div>
+
+
+<div id="reveal">
+
+    <div id="revealIcon"></div>
+
+    <div id="revealText"></div>
+
+    <button id="nextRevealBtn" onclick="nextReveal()">
+        Continua
+    </button>
 
 </div>
 
@@ -892,6 +979,24 @@ function checkAllFilled(){
     complete ? "inline-block" : "none";
 
 }
+function showSuccess(){
+
+    document
+        .querySelector(".game")
+        .classList.add("completed");
+
+    document
+        .getElementById("success")
+        .style.display = "block";
+
+    document
+        .getElementById("success")
+        .scrollIntoView({
+            behavior:"smooth",
+            block:"center"
+        });
+
+}
 
 function checkCrossword(){
 
@@ -960,6 +1065,167 @@ function checkCrossword(){
         showSuccess();
 
     }, 900);
+
+}
+const revealSteps = [
+
+    {
+        icon:"🧳",
+        text:"PREPARA LA VALIGIA"
+    },
+
+    {
+        icon:"❤️",
+        text:"IO + TE"
+    },
+
+    {
+        icon:"📅",
+        text:"10 - 11 OTTOBRE"
+    },
+
+    {
+        icon:"🏡",
+        text:"UN WEEKEND TUTTO NOSTRO"
+    },
+
+    {
+        icon:"🌄",
+        text:"BORGHI, RELAX E TEMPO INSIEME"
+    },
+
+    {
+        icon:"🍷",
+        text:"E OVVIAMENTE... UN BUON CALICE"
+    },
+
+    {
+        icon:"🍇",
+        text:"DEGUSTAZIONE ALLA TENUTA CAVALIER PEPE"
+    },
+
+    {
+        icon:"❤️",
+        text:"BUON COMPLEANNO AMORE"
+    }
+
+];
+
+let revealIndex = 0;
+
+
+function startReveal(){
+
+    document
+        .getElementById("success")
+        .style.display = "none";
+
+    const reveal =
+        document.getElementById("reveal");
+
+    reveal.style.display = "block";
+
+    revealIndex = 0;
+
+    showRevealStep();
+
+    setTimeout(() => {
+
+        reveal.scrollIntoView({
+            behavior:"smooth",
+            block:"center"
+        });
+
+    },100);
+
+}
+
+
+function showRevealStep(){
+
+    const step =
+        revealSteps[revealIndex];
+
+    const icon =
+        document.getElementById("revealIcon");
+
+    const text =
+        document.getElementById("revealText");
+
+    icon.textContent =
+        step.icon;
+
+    text.textContent =
+        step.text;
+
+    const reveal =
+        document.getElementById("reveal");
+
+    reveal.style.animation = "none";
+
+    void reveal.offsetWidth;
+
+    reveal.style.animation =
+        "fadeUp .6s ease";
+
+    const button =
+        document.getElementById("nextRevealBtn");
+
+    button.style.display = "inline-block";
+
+    if(
+        revealIndex ===
+        revealSteps.length - 1
+    ){
+
+        button.textContent = "❤️";
+
+    }else{
+
+        button.textContent = "Continua";
+
+    }
+
+}
+
+function nextReveal(){
+
+    if(
+        revealIndex <
+        revealSteps.length - 1
+    ){
+
+        revealIndex++;
+
+        showRevealStep();
+
+        return;
+
+    }
+
+
+    /*
+    Ultima schermata
+    */
+
+    document
+        .getElementById("revealIcon")
+        .textContent = "🥂";
+
+    document
+        .getElementById("revealText")
+        .innerHTML =
+        `
+        Non volevo regalarti semplicemente qualcosa.<br><br>
+
+        Volevo regalarci qualcosa da vivere insieme.<br><br>
+
+        ❤️
+        `;
+
+    document
+        .getElementById("nextRevealBtn")
+        .style.display = "none";
 
 }
 </script>
