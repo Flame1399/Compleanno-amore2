@@ -416,8 +416,19 @@ h1{
 /* =========================
    REVEAL
    ========================= */
+#reveal{
+    position:relative;
+    overflow:hidden;
+}
 
-#revealIcon{
+#revealIcon,
+#revealText,
+#nextRevealBtn{
+    position:relative;
+    z-index:2;
+}
+
+   #revealIcon{
     font-size:64px;
     margin-bottom:18px;
 
@@ -434,7 +445,28 @@ h1{
         0 2px 12px rgba(176,0,79,.06);
 }
 
+#heartsContainer{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+    z-index:1;
+}
 
+.floating-heart{
+    position:absolute;
+    bottom:-40px;
+
+    opacity:0;
+
+    user-select:none;
+    pointer-events:none;
+
+    will-change:transform, opacity;
+
+    animation:
+        floatingHeart 5s ease-in forwards;
+}
 /* Animazione reveal */
 
 @keyframes fadeUp{
@@ -465,6 +497,33 @@ h1{
     100%{
         opacity:1;
         transform:scale(1);
+    }
+
+}
+   @keyframes floatingHeart{
+
+    0%{
+        opacity:0;
+        transform:
+            translateY(0)
+            rotate(0deg)
+            scale(.8);
+    }
+
+    15%{
+        opacity:.35;
+    }
+
+    70%{
+        opacity:.25;
+    }
+
+    100%{
+        opacity:0;
+        transform:
+            translateY(-420px)
+            rotate(20deg)
+            scale(1.2);
     }
 
 }
@@ -611,7 +670,7 @@ h1{
 
         border-radius:18px;
     }
-
+    
     #success h2{
         font-size:27px;
     }
@@ -814,7 +873,7 @@ h1{
 
 
 <div id="reveal">
-
+    <div id="heartsContainer"></div>
     <div id="revealIcon"></div>
 
     <div id="revealText"></div>
@@ -1545,11 +1604,72 @@ function startReveal(){
     },100);
 
 }
+   function startHearts(){
+
+    const container =
+        document.getElementById("heartsContainer");
+
+    container.innerHTML = "";
+
+    const colors = [
+        "#b0004f",
+        "#d45a88",
+        "#e98aaa",
+        "#8d003f"
+    ];
+
+    for(let i = 0; i < 12; i++){
+
+        const heart =
+            document.createElement("div");
+
+        heart.className =
+            "floating-heart";
+
+        heart.textContent = "♥";
+
+        heart.style.left =
+            Math.random() * 90 + "%";
+
+        heart.style.fontSize =
+            (14 + Math.random() * 18) + "px";
+
+        heart.style.color =
+            colors[
+                Math.floor(
+                    Math.random() * colors.length
+                )
+            ];
+
+        heart.style.animationDelay =
+            (Math.random() * 2) + "s";
+
+        heart.style.animationDuration =
+            (4 + Math.random() * 3) + "s";
+
+        container.appendChild(heart);
+
+    }
+
+}
 
 function showRevealStep(){
 
     const step =
         revealSteps[revealIndex];
+
+    const heartsContainer =
+        document.getElementById("heartsContainer");
+
+    heartsContainer.innerHTML = "";
+
+    if(
+        step.text === "BUON COMPLEANNO AMORE"
+    ){
+
+        startHearts();
+
+    }
 
     const icon =
         document.getElementById("revealIcon");
@@ -1638,7 +1758,8 @@ function nextReveal(){
     document
         .getElementById("nextRevealBtn")
         .style.display = "none";
-
+         
+   startHearts();
 }
 </script>
 
