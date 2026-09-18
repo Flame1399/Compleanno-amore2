@@ -339,14 +339,21 @@ h1{
     max-width:700px;
 
     margin:45px auto 0;
-    padding:40px 30px;
+    padding:45px 35px;
 
-    background:#fff;
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff 0%,
+            #fff7fa 45%,
+            #ffe9f1 100%
+        );
 
-    border-radius:24px;
+    border:1px solid rgba(176,0,79,.10);
+    border-radius:28px;
 
     box-shadow:
-        0 12px 35px rgba(0,0,0,.10);
+        0 20px 60px rgba(176,0,79,.14);
 
     text-align:center;
 
@@ -411,15 +418,20 @@ h1{
    ========================= */
 
 #revealIcon{
-    font-size:60px;
-    margin-bottom:12px;
-}
+    font-size:64px;
+    margin-bottom:18px;
 
+    animation:
+        revealPop .5s ease;
+}
 #revealText{
     color:#b0004f;
     font-size:32px;
     line-height:1.35;
     font-weight:700;
+    letter-spacing:.3px;
+    text-shadow:
+        0 2px 12px rgba(176,0,79,.06);
 }
 
 
@@ -439,7 +451,23 @@ h1{
 
 }
 
+@keyframes revealPop{
 
+    0%{
+        opacity:0;
+        transform:scale(.65);
+    }
+
+    70%{
+        transform:scale(1.08);
+    }
+
+    100%{
+        opacity:1;
+        transform:scale(1);
+    }
+
+}
 /* =========================
    TABLET
    ========================= */
@@ -1465,20 +1493,24 @@ const revealSteps = [
     },
 
     {
-        icon:"🍷",
-        text:"E OVVIAMENTE... UN BUON CALICE"
-    },
+    icon:"🍷",
+    text:"E OVVIAMENTE... UN BUON CALICE"
+},
 
-    {
-        icon:"🍇",
-        text:"DEGUSTAZIONE ALLA TENUTA CAVALIER PEPE"
-    },
+{
+    icon:"🍇",
+    text:"CON UNA DEGUSTAZIONE SPECIALE..."
+},
 
-    {
-        icon:"❤️",
-        text:"BUON COMPLEANNO AMORE"
-    }
+{
+    icon:"✨",
+    text:"TENUTA CAVALIER PEPE"
+},
 
+{
+    icon:"❤️",
+    text:"BUON COMPLEANNO AMORE"
+}
 ];
 
 let revealIndex = 0;
@@ -1526,10 +1558,17 @@ function showRevealStep(){
         document.getElementById("revealText");
 
     icon.textContent =
-        step.icon;
+    step.icon;
 
-    text.textContent =
-        step.text;
+text.textContent =
+    step.text;
+
+icon.style.animation = "none";
+
+void icon.offsetWidth;
+
+icon.style.animation =
+    "revealPop .5s ease";
 
     const reveal =
         document.getElementById("reveal");
