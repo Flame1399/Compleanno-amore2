@@ -210,20 +210,27 @@ h1{
     cursor:pointer;
     padding:6px 8px;
     margin-left:-8px !important;
+
     border-radius:8px;
+    border-left:3px solid transparent;
 
     transition:
         background .15s ease,
-        color .15s ease;
+        color .15s ease,
+        border-color .15s ease,
+        transform .15s ease;
 }
 
 .clue:hover{
-    background:#fff0f5;
+    background:#fff5f8;
+    color:#8d003f;
 }
 
 .clue.active{
-    background:#ffc9dc;
+    background:#fff0f5;
     color:#8d003e;
+    border-left-color:#b0004f;
+    transform:translateX(2px);
 }
 
 
@@ -544,9 +551,9 @@ h1{
     }
 
     .clue{
-        padding:8px;
-        margin-left:0 !important;
-    }
+    padding:8px 10px;
+    margin-left:0 !important;
+}
 
 
     /* Verifica */
