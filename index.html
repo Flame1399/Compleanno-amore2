@@ -575,36 +575,40 @@ h1{
     /* Gioco */
 
     .game{
-        flex-direction:column;
-        align-items:center;
-        gap:25px;
-    }
+    flex-direction:column;
+    align-items:center;
+    gap:25px;
 
+    width:100%;
+    padding:16px 6px;
+    overflow:hidden;
+}
 
-    /* Cruciverba */
+/* Cruciverba */
 
-    .crossword{
-        grid-template-columns:
-            repeat(12,29px);
+.crossword{
+    grid-template-columns:repeat(12,28px);
+    grid-template-rows:repeat(15,28px);
 
-        grid-template-rows:
-            repeat(15,29px);
+    width:336px;
+    height:420px;
 
-        width:348px;
-        height:435px;
+    max-width:none;
+    flex-shrink:0;
 
-        max-width:100%;
-    }
+    margin-left:auto;
+    margin-right:auto;
+}
 
-    .cell,
-    .black{
-        width:29px;
-        height:29px;
-    }
+.cell,
+.black{
+    width:28px;
+    height:28px;
+}
 
-    .cell input{
-        font-size:19px;
-    }
+.cell input{
+    font-size:18px;
+}
 
     .number{
         top:1px;
