@@ -355,12 +355,14 @@ function onCellClick(r, c) {
     CLUE_CELLS[i].some(([rr, cc]) => key(rr, cc) === k)
   );
   if (!candidates.length) return;
+  /* Cambia direzione solo cliccando di nuovo sulla casella già attiva */
+  const alreadyActive = candidates.includes(clueIndex) && cursor[0] === r && cursor[1] === c;
   let next;
-  if (candidates.length > 1 && candidates.includes(clueIndex))
+  if (alreadyActive && candidates.length > 1)
     next = candidates[(candidates.indexOf(clueIndex) + 1) % candidates.length];
   else
-    next = candidates.find(i => i !== clueIndex) ?? candidates[0];
-  clueIndex = candidates.includes(clueIndex) ? next : candidates[0];
+    next = candidates.includes(clueIndex) ? clueIndex : candidates[0];
+  clueIndex = next;
   cursor = [r, c];
   render();
 }
