@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💙 La Giornata Enigmistica — Buon Compleanno Amore</title>
+<meta name="description" content="Un cruciverba fatto a mano: 16 indizi, tanti ricordi e una sorpresa nascosta per il tuo compleanno.">
+<meta property="og:title" content="💙 La Giornata Enigmistica">
+<meta property="og:description" content="16 indizi. Una sola sorpresa. Un regalo di compleanno tutto da risolvere.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+
+<style>
+* { box-sizing: border-box; }
+body { min-height:100vh; background:#fff6f8; color:#333; font-family:"Segoe UI",system-ui,sans-serif; margin:0; padding:20px; }
+.container { width:100%; max-width:1200px; margin:0 auto; }
+h1 { text-align:center; color:#b0004f; margin:10px 0 26px; font-size:28px; }
+.subtitle { text-align:center; color:#8d5b70; font-size:15px; font-weight:500; margin:-16px 0 26px; }
+.game { display:flex; justify-content:center; align-items:flex-start; gap:25px; flex-wrap:wrap; background:rgba(255,255,255,.82); padding:28px; border-radius:28px; border:1px solid rgba(176,0,79,.08); box-shadow:0 15px 45px rgba(176,0,79,.10); }
+.grid-wrap { display:flex; flex-direction:column; align-items:center; gap:14px; }
+.grid { display:grid; grid-template-columns:repeat(12,35px); grid-template-rows:repeat(15,35px); background:#000; border:2px solid #000; flex-shrink:0; }
+.cell { position:relative; background:#fff; border:1px solid #d8c8ce; width:35px; height:35px; }
+.black { background:#000; width:35px; height:35px; }
+.cell input { display:block; width:100%; height:100%; border:none; outline:none; background:transparent; text-align:center; text-transform:uppercase; font-family:inherit; font-size:22px; font-weight:700; color:#333; padding:0; caret-color:transparent; }
+.cell input.word { background:#fff1f6; }
+.cell input.current { background:#ffd4e3; box-shadow:inset 0 0 0 2px #b0004f; }
+.cell input.ok { background:#dff5e4 !important; color:#216b39; }
+.cell input.ko { background:#ffd6df !important; color:#a40032; animation:shake .35s ease; }
+.num { position:absolute; top:2px; left:2px; z-index:10; pointer-events:none; font-size:8px; line-height:8px; font-weight:800; color:#8d003f; }
+.progress { display:flex; align-items:center; gap:10px; width:100%; max-width:420px; font-size:13px; color:#8d5b70; font-weight:600; }
+.bar { flex:1; height:8px; border-radius:999px; background:#ffe3ec; overflow:hidden; }
+.bar-fill { height:100%; background:#b0004f; transition:width .3s ease; width:0; }
+.active-clue { max-width:420px; margin:0; text-align:center; font-size:15px; line-height:1.4; background:#fff0f5; border-radius:14px; padding:10px 14px; color:#8d003e; }
+.nav { display:flex; gap:10px; }
+.nav button, .actions button { border:1px solid rgba(176,0,79,.25); background:#fff; color:#b0004f; font-family:inherit; font-size:14px; font-weight:600; padding:10px 18px; border-radius:999px; cursor:pointer; transition:background .2s ease,transform .2s ease; }
+.nav button:hover, .actions button:hover { background:#fff0f5; transform:translateY(-1px); }
+.clues { width:560px; max-width:100%; }
+.clue-cols { display:grid; grid-template-columns:1fr 1fr; gap:28px; align-items:start; }
+.clues h2 { color:#b0004f; font-size:24px; margin:0 0 16px; }
+.clue { font-size:15px; line-height:1.35; margin:0 0 10px; cursor:pointer; padding:6px 8px; border-radius:8px; border-left:3px solid transparent; transition:background .15s ease,color .15s ease,border-color .15s ease; }
+.clue:hover { background:#fff5f8; color:#8d003f; }
+.clue.active { background:#fff0f5; color:#8d003e; border-left-color:#b0004f; }
+.clue strong { color:#222; }
+.actions { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:24px; }
+.primary { border:none !important; background:#b0004f !important; color:#fff !important; padding:14px 30px !important; border-radius:999px; font-family:inherit; font-size:16px; font-weight:600; cursor:pointer; box-shadow:0 6px 18px rgba(176,0,79,.20); }
+.primary:hover { background:#8d003f !important; }
+.message { min-height:24px; margin-top:12px; text-align:center; font-size:14px; font-weight:600; color:#b0004f; }
+.panel { position:relative; overflow:hidden; width:100%; max-width:700px; margin:45px auto 0; padding:45px 35px; background:linear-gradient(145deg,#fff 0%,#fff7fa 45%,#ffe9f1 100%); border:1px solid rgba(176,0,79,.10); border-radius:28px; box-shadow:0 20px 60px rgba(176,0,79,.14); text-align:center; animation:fadeUp .7s ease; }
+.panel h2 { color:#b0004f; font-size:32px; margin:10px 0 20px; }
+.panel p { max-width:520px; margin:12px auto; font-size:16px; line-height:1.6; }
+.big-heart { font-size:55px; }
+.reveal-icon { position:relative; z-index:2; font-size:64px; margin-bottom:18px; animation:pop .5s ease; }
+.reveal-text { position:relative; z-index:2; color:#b0004f; font-size:30px; line-height:1.35; font-weight:700; animation:fadeUp .6s ease; }
+.reveal .primary { position:relative; z-index:2; margin-top:25px; }
+.hearts { position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:1; }
+.heart { position:absolute; bottom:-40px; opacity:0; animation-name:float; animation-timing-function:ease-in; animation-fill-mode:forwards; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+@keyframes pop { 0%{opacity:0;transform:scale(.65)} 70%{transform:scale(1.08)} 100%{opacity:1;transform:scale(1)} }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-3px)} 75%{transform:translateX(3px)} }
+@keyframes float { 0%{opacity:0;transform:translateY(0) scale(.8)} 15%{opacity:.35} 70%{opacity:.25} 100%{opacity:0;transform:translateY(-420px) rotate(20deg) scale(1.2)} }
+.hidden { display:none; }
+@media (max-width:1000px){ .game{flex-direction:column;align-items:center} .clues{width:700px;max-width:100%} }
+@media (max-width:600px){
+  body{padding:8px}
+  h1{font-size:20px;white-space:nowrap;letter-spacing:-.4px}
+  .subtitle{font-size:13px}
+  .game{width:100%;padding:16px 6px;gap:22px}
+  .grid{grid-template-columns:repeat(12,28px);grid-template-rows:repeat(15,28px)}
+  .cell,.black{width:28px;height:28px}
+  .cell input{font-size:18px}
+  .num{font-size:7px;line-height:7px;top:1px;left:1px}
+  .clue-cols{grid-template-columns:1fr;gap:12px}
+  .clues h2{font-size:21px}
+  .clue{font-size:14px}
+  .actions button,.primary{flex:1 1 140px}
+  .panel{padding:30px 18px;border-radius:18px;margin-top:25px}
+  .panel h2{font-size:27px}
+  .reveal-icon{font-size:50px}
+  .reveal-text{font-size:24px}
+}
+@media (max-width:370px){ .grid{grid-template-columns:repeat(12,27px);grid-template-rows:repeat(15,27px)} .cell,.black{width:27px;height:27px} }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1><span>💙</span> LA GIORNATA ENIGMISTICA <span>💙</span></h1>
+  <p class="subtitle">16 indizi. Una sola sorpresa. 💙</p>
+
+  <!-- GIOCO -->
+  <div id="game" class="game">
+    <div class="grid-wrap">
+      <div id="grid" class="grid"></div>
+
+      <div class="progress">
+        <div class="bar"><div id="barFill" class="bar-fill"></div></div>
+        <span id="progressText">0 / 0 lettere</span>
+      </div>
+
+      <p id="activeClue" class="active-clue"></p>
+
+      <div class="nav">
+        <button id="prevBtn" type="button">‹ Precedente</button>
+        <button id="nextBtn" type="button">Successiva ›</button>
+      </div>
+    </div>
+
+    <div class="clues">
+      <div class="clue-cols">
+        <div>
+          <h2>Orizzontali</h2>
+          <div id="acrossClues"></div>
+        </div>
+        <div>
+          <h2>Verticali</h2>
+          <div id="downClues"></div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="verifyBtn" class="primary" type="button">Verifica</button>
+        <button id="hintBtn" type="button">Suggerimento</button>
+        <button id="clearBtn" type="button">Cancella parola</button>
+        <button id="restartBtn" type="button">Ricomincia</button>
+      </div>
+      <div id="message" class="message"></div>
+    </div>
+  </div>
+
+  <!-- COMPLIMENTI -->
+  <div id="success" class="panel hidden">
+    <div class="big-heart">💙</div>
+    <h2>COMPLIMENTI</h2>
+    <p>Hai risolto tutti gli indizi.</p>
+    <p>Ma forse avrai notato che alcune di queste parole non erano qui per caso…</p>
+    <button id="revealBtn" class="primary" type="button">Scopri cosa ti aspetta 💙</button>
+  </div>
+
+  <!-- SORPRESA -->
+  <div id="reveal" class="panel reveal hidden">
+    <div id="hearts" class="hearts hidden"></div>
+    <div id="revealIcon" class="reveal-icon"></div>
+    <div id="revealText" class="reveal-text"></div>
+    <button id="continueBtn" class="primary" type="button">Continua</button>
+  </div>
+</div>
+
+<script>
+/* =========================
+   SOLUZIONI (offuscate)
+   ========================= */
+const ENCODED = [
+  "####Z#######",
+  "###THYPRH###",
+  "##C#S#S#TPZZ",
+  "#THALYH#V###",
+  "##S#Y###Y###",
+  "#TPUUPL#L###",
+  "##N#V#######",
+  "##P#########",
+  "#JHSPJL#W###",
+  "#####V##B#Y#",
+  "C##KPJLTIYL#",
+  "P####J####S#",
+  "UVJJPVALSSH#",
+  "V####S####E#",
+  "###DLLRLUK##",
+];
+
+const decode = s => s.split("").map(c =>
+  c === "#" ? "#" : String.fromCharCode(((c.charCodeAt(0) - 65 + 19) % 26) + 65)
+).join("");
+
+const MATRIX = ENCODED.map(decode);
+const ROWS = MATRIX.length;
+const COLS = MATRIX[0].length;
+const STORAGE_KEY = "cruciverba-compleanno-v1";
+
+const NUMBERS = {
+  "0-4":"1","1-3":"2","1-6":"3","1-8":"4","2-2":"5","2-8":"6","3-1":"7",
+  "5-1":"8","8-1":"9","8-5":"10","8-8":"11","9-10":"12","10-0":"13",
+  "10-3":"14","12-0":"15","14-3":"16",
+};
+
+const CLUES = [
+  { n:"2",  row:1,  col:3,  dir:"across", text:"L'età avanza… chissà se mi ricordo ancora come mi chiamo" },
+  { n:"6",  row:2,  col:8,  dir:"across", text:"Soprannome della mia migliore amica (secondo il mio ragazzo)" },
+  { n:"7",  row:3,  col:1,  dir:"across", text:"La prima gita fuori porta con il ragazzo qui accanto…" },
+  { n:"8",  row:5,  col:1,  dir:"across", text:"La mia bimba a 4 zampe" },
+  { n:"9",  row:8,  col:1,  dir:"across", text:"Fuori a cena, mi piace prenderlo rosso!" },
+  { n:"14", row:10, col:3,  dir:"across", text:"Il 6 o il 7…? Ho ragione io" },
+  { n:"15", row:12, col:0,  dir:"across", text:"Gusto inconfondibile del Nettuno" },
+  { n:"16", row:14, col:3,  dir:"across", text:"SPA o mare, cosa vogliamo fare questo…" },
+  { n:"1",  row:0,  col:4,  dir:"down",   text:"La mia adorata città" },
+  { n:"3",  row:1,  col:6,  dir:"down",   text:"Come mi chiama il mio ragazzo quando vuole farmi innervosire" },
+  { n:"4",  row:1,  col:8,  dir:"down",   text:"Sentimento che provo per il mio bimbo (ma meglio non dirglielo spesso!)" },
+  { n:"5",  row:2,  col:2,  dir:"down",   text:"Provo a prepararla, ma Minnie è sempre la prima a entrarci" },
+  { n:"10", row:8,  col:5,  dir:"down",   text:"Ne vado ghiotta, ma non si mangiano" },
+  { n:"11", row:8,  col:8,  dir:"down",   text:"Luogo del nostro primo incontro" },
+  { n:"12", row:9,  col:10, dir:"down",   text:"La speranza di ogni nostro viaggio" },
+  { n:"13", row:10, col:0,  dir:"down",   text:"Lo preferisco all'acqua" },
+];
+
+const REVEAL_STEPS = [
+  { icon:"🧳", text:"PREPARA LA VALIGIA" },
+  { icon:"💙", text:"IO + TE" },
+  { icon:"📅", text:"10 - 11 OTTOBRE" },
+  { icon:"🏡", text:"UN WEEKEND TUTTO NOSTRO" },
+  { icon:"🌄", text:"BORGHI, RELAX E TEMPO INSIEME" },
+  { icon:"🍷", text:"E OVVIAMENTE… UN BUON CALICE" },
+  { icon:"🍇", text:"CON UNA DEGUSTAZIONE SPECIALE…" },
+  { icon:"✨", text:"TENUTA CAVALIER PEPE" },
+  { icon:"💙", text:"BUON COMPLEANNO AMORE" },
+];
+
+const FINAL_TEXT = "Non volevo regalarti semplicemente qualcosa.<br><br>Volevo regalarti un nuovo ricordo da custodire.<br><br>💙";
+
+/* =========================
+   UTILS
+   ========================= */
+const sol = (r, c) => MATRIX[r][c];
+const isOpen = (r, c) => r >= 0 && r < ROWS && c >= 0 && c < COLS && MATRIX[r][c] !== "#";
+const key = (r, c) => r + "-" + c;
+
+function cellsOf(clue) {
+  const out = [];
+  let r = clue.row, c = clue.col;
+  while (isOpen(r, c)) {
+    out.push([r, c]);
+    if (clue.dir === "across") c++; else r++;
+  }
+  return out;
+}
+
+const CLUE_CELLS = CLUES.map(cellsOf);
+
+const ALL_CELLS = [];
+for (let r = 0; r < ROWS; r++)
+  for (let c = 0; c < COLS; c++)
+    if (isOpen(r, c)) ALL_CELLS.push([r, c]);
+
+/* =========================
+   STATO
+   ========================= */
+let letters = {};
+try {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (raw) letters = JSON.parse(raw);
+} catch (e) {}
+
+let clueIndex = 0;
+let cursor = [CLUES[0].row, CLUES[0].col];
+let marks = {};
+let revealIndex = 0;
+
+const $ = id => document.getElementById(id);
+const inputs = {};
+
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(letters)); } catch (e) {}
+}
+
+/* =========================
+   COSTRUZIONE GRIGLIA
+   ========================= */
+function buildGrid() {
+  const grid = $("grid");
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const k = key(r, c);
+      if (MATRIX[r][c] === "#") {
+        const d = document.createElement("div");
+        d.className = "black";
+        grid.appendChild(d);
+        continue;
+      }
+      const cell = document.createElement("div");
+      cell.className = "cell";
+      if (NUMBERS[k]) {
+        const num = document.createElement("span");
+        num.className = "num";
+        num.textContent = NUMBERS[k];
+        cell.appendChild(num);
+      }
+      const input = document.createElement("input");
+      input.maxLength = 1;
+      input.autocomplete = "off";
+      input.autocorrect = "off";
+      input.spellcheck = false;
+      input.setAttribute("aria-label", "Riga " + (r + 1) + " colonna " + (c + 1));
+      input.value = letters[k] || "";
+      input.dataset.r = r;
+      input.dataset.c = c;
+      inputs[k] = input;
+
+      input.addEventListener("input", () => handleInput(r, c, input));
+      input.addEventListener("keydown", e => handleKey(e, r, c));
+      input.addEventListener("focus", () => { cursor = [r, c]; render(); });
+      input.addEventListener("click", () => onCellClick(r, c));
+
+      cell.appendChild(input);
+      grid.appendChild(cell);
+    }
+  }
+}
+
+function buildClues() {
+  const across = $("acrossClues");
+  const down = $("downClues");
+  CLUES.forEach((clue, i) => {
+    const p = document.createElement("p");
+    p.className = "clue";
+    p.id = "clue-" + i;
+    p.innerHTML = "<strong>" + clue.n + ".</strong> " + clue.text;
+    p.addEventListener("click", () => selectClue(i));
+    (clue.dir === "across" ? across : down).appendChild(p);
+  });
+}
+
+/* =========================
+   LOGICA DI GIOCO
+   ========================= */
+function activeCells() { return CLUE_CELLS[clueIndex]; }
+
+function step(r, c, delta) {
+  const cells = activeCells();
+  const idx = cells.findIndex(([rr, cc]) => rr === r && cc === c);
+  return cells[idx + delta] || null;
+}
+
+function focusCell(r, c) {
+  cursor = [r, c];
+  const input = inputs[key(r, c)];
+  if (input) input.focus();
+  render();
+}
+
+function selectClue(i) {
+  clueIndex = i;
+  const cells = CLUE_CELLS[i];
+  const firstEmpty = cells.find(([r, c]) => !letters[key(r, c)]) || cells[0];
+  // Su smartphone non spostiamo il focus: la tastiera coprirebbe la definizione
+  if (window.matchMedia("(min-width: 601px)").matches) {
+    focusCell(firstEmpty[0], firstEmpty[1]);
+  } else {
+    cursor = [firstEmpty[0], firstEmpty[1]];
+    render();
+  }
+}
+
+function onCellClick(r, c) {
+  const k = key(r, c);
+  const candidates = CLUES.map((_, i) => i).filter(i =>
+    CLUE_CELLS[i].some(([rr, cc]) => key(rr, cc) === k)
+  );
+  if (!candidates.length) return;
+  let next;
+  if (candidates.length > 1 && candidates.includes(clueIndex))
+    next = candidates[(candidates.indexOf(clueIndex) + 1) % candidates.length];
+  else
+    next = candidates.find(i => i !== clueIndex) ?? candidates[0];
+  clueIndex = candidates.includes(clueIndex) ? next : candidates[0];
+  cursor = [r, c];
+  render();
+}
+
+function setLetter(r, c, value) {
+  const k = key(r, c);
+  if (value) letters[k] = value; else delete letters[k];
+  marks = {};
+  $("message").textContent = "";
+  save();
+}
+
+function handleInput(r, c, input) {
+  const ch = input.value.replace(/[^a-zA-Z]/g, "").slice(-1).toUpperCase();
+  input.value = ch;
+  setLetter(r, c, ch);
+  if (ch) {
+    /* Salta le caselle già compilate: vai alla prima vuota della parola */
+    const cells = activeCells();
+    const idx = cells.findIndex(([rr, cc]) => rr === r && cc === c);
+    const nextEmpty = cells.slice(idx + 1).find(([rr, cc]) => !letters[key(rr, cc)]);
+    const target = nextEmpty || step(r, c, 1);
+    if (target) { focusCell(target[0], target[1]); return; }
+  }
+  render();
+}
+
+function handleKey(e, r, c) {
+  const move = (dr, dc) => {
+    e.preventDefault();
+    let nr = r + dr, nc = c + dc;
+    while (!isOpen(nr, nc) && nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS) { nr += dr; nc += dc; }
+    if (isOpen(nr, nc)) focusCell(nr, nc);
+  };
+  if (e.key === "ArrowRight") move(0, 1);
+  else if (e.key === "ArrowLeft") move(0, -1);
+  else if (e.key === "ArrowDown") move(1, 0);
+  else if (e.key === "ArrowUp") move(-1, 0);
+  else if (e.key === "Backspace") {
+    e.preventDefault();
+    if (!letters[key(r, c)]) {
+      const prev = step(r, c, -1);
+      if (prev) {
+        setLetter(prev[0], prev[1], "");
+        inputs[key(prev[0], prev[1])].value = "";
+        focusCell(prev[0], prev[1]);
+      }
+    } else {
+      setLetter(r, c, "");
+      inputs[key(r, c)].value = "";
+      render();
+    }
+  } else if (e.key === "Tab") {
+    e.preventDefault();
+    selectClue((clueIndex + (e.shiftKey ? CLUES.length - 1 : 1)) % CLUES.length);
+  }
+}
+
+function hint() {
+  const empty = activeCells().find(([r, c]) => letters[key(r, c)] !== sol(r, c));
+  if (!empty) {
+    $("message").textContent = "Questa parola è già completa 💙";
+    return;
+  }
+  setLetter(empty[0], empty[1], sol(empty[0], empty[1]));
+  inputs[key(empty[0], empty[1])].value = sol(empty[0], empty[1]);
+  $("message").textContent = "Ecco una letterina di aiuto 💙";
+  render();
+}
+
+function clearWord() {
+  activeCells().forEach(([r, c]) => {
+    delete letters[key(r, c)];
+    inputs[key(r, c)].value = "";
+  });
+  marks = {};
+  $("message").textContent = "";
+  save();
+  render();
+}
+
+function restart() {
+  if (!confirm("Vuoi ricominciare da capo? Le lettere inserite verranno cancellate.")) return;
+  letters = {};
+  marks = {};
+  $("message").textContent = "";
+  Object.values(inputs).forEach(i => i.value = "");
+  save();
+  render();
+}
+
+function verify() {
+  const next = {};
+  let errors = 0;
+  ALL_CELLS.forEach(([r, c]) => {
+    const ok = (letters[key(r, c)] || "") === sol(r, c);
+    next[key(r, c)] = ok ? "ok" : "ko";
+    if (!ok) errors++;
+  });
+  marks = next;
+  render();
+  if (errors > 0) {
+    $("message").textContent = "Ci siamo quasi… ancora " + errors + " " + (errors === 1 ? "lettera" : "lettere") + " da sistemare 💙";
+
+    return;
+  }
+  $("message").textContent = "Perfetto. Hai risolto tutto 💙";
+  setTimeout(() => {
+    $("game").classList.add("hidden");
+    $("success").classList.remove("hidden");
+    setTimeout(() => $("success").scrollIntoView({ behavior:"smooth", block:"center" }), 80);
+  }, 900);
+}
+
+/* =========================
+   RENDER
+   ========================= */
+function render() {
+  const activeSet = new Set(activeCells().map(([r, c]) => key(r, c)));
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const k = key(r, c);
+      const input = inputs[k];
+      if (!input) continue;
+      input.classList.toggle("word", activeSet.has(k));
+      input.classList.toggle("current", cursor[0] === r && cursor[1] === c);
+      input.classList.toggle("ok", marks[k] === "ok");
+      input.classList.toggle("ko", marks[k] === "ko");
+    }
+  }
+  const filled = ALL_CELLS.filter(([r, c]) => letters[key(r, c)]).length;
+  $("barFill").style.width = (filled / ALL_CELLS.length * 100) + "%";
+  $("progressText").textContent = filled + " / " + ALL_CELLS.length + " lettere";
+
+  const clue = CLUES[clueIndex];
+  $("activeClue").innerHTML = "<strong>" + clue.n + ".</strong> " + clue.text;
+
+  CLUES.forEach((_, i) => {
+    document.getElementById("clue-" + i).classList.toggle("active", i === clueIndex);
+  });
+}
+
+/* =========================
+   SORPRESA FINALE
+   ========================= */
+function spawnHearts() {
+  const box = $("hearts");
+  box.innerHTML = "";
+  box.classList.remove("hidden");
+  const colors = ["#b0004f", "#d45a88", "#e98aaa", "#8d003f"];
+  for (let i = 0; i < 14; i++) {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.textContent = "♥";
+    h.style.left = (Math.random() * 90) + "%";
+    h.style.fontSize = (14 + Math.random() * 18) + "px";
+    h.style.color = colors[Math.floor(Math.random() * colors.length)];
+    h.style.animationDelay = (Math.random() * 2) + "s";
+    h.style.animationDuration = (4 + Math.random() * 3) + "s";
+    box.appendChild(h);
+  }
+}
+
+function renderReveal() {
+  const lastStep = revealIndex >= REVEAL_STEPS.length;
+  const current = REVEAL_STEPS[Math.min(revealIndex, REVEAL_STEPS.length - 1)];
+
+  const icon = $("revealIcon");
+  const text = $("revealText");
+  icon.textContent = lastStep ? "🥂" : current.icon;
+  if (lastStep) text.innerHTML = FINAL_TEXT; else text.textContent = current.text;
+
+  /* riavvia le animazioni */
+  [icon, text].forEach(el => { el.style.animation = "none"; void el.offsetWidth; el.style.animation = ""; });
+
+  if (lastStep || current.text === "BUON COMPLEANNO AMORE") spawnHearts();
+  else $("hearts").classList.add("hidden");
+
+  const btn = $("continueBtn");
+  if (lastStep) btn.classList.add("hidden");
+  else {
+    btn.classList.remove("hidden");
+    btn.textContent = revealIndex === REVEAL_STEPS.length - 1 ? "💙" : "Continua";
+  }
+}
+
+/* =========================
+   EVENTI
+   ========================= */
+$("prevBtn").addEventListener("click", () => selectClue((clueIndex + CLUES.length - 1) % CLUES.length));
+$("nextBtn").addEventListener("click", () => selectClue((clueIndex + 1) % CLUES.length));
+$("verifyBtn").addEventListener("click", verify);
+$("hintBtn").addEventListener("click", hint);
+$("clearBtn").addEventListener("click", clearWord);
+$("restartBtn").addEventListener("click", restart);
+$("revealBtn").addEventListener("click", () => {
+  revealIndex = 0;
+  $("success").classList.add("hidden");
+  $("reveal").classList.remove("hidden");
+  renderReveal();
+  setTimeout(() => $("reveal").scrollIntoView({ behavior:"smooth", block:"center" }), 100);
+});
+$("continueBtn").addEventListener("click", () => { revealIndex++; renderReveal(); });
+
+/* =========================
+   AVVIO
+   ========================= */
+buildGrid();
+buildClues();
+render();
+</script>
+
+</body>
+</html>
