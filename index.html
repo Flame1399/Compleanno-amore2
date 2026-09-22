@@ -234,6 +234,8 @@ function cellsOf(clue) {
 }
 
 const CLUE_CELLS = CLUES.map(cellsOf);
+// Ordine numerico delle definizioni: 1 → 16
+const ORDER = CLUES.map((_, i) => i).sort((a, b) => Number(CLUES[a].n) - Number(CLUES[b].n));
 
 const ALL_CELLS = [];
 for (let r = 0; r < ROWS; r++)
@@ -249,8 +251,8 @@ try {
   if (raw) letters = JSON.parse(raw);
 } catch (e) {}
 
-let clueIndex = 0;
-let cursor = [CLUES[0].row, CLUES[0].col];
+let clueIndex = ORDER[0];
+let cursor = [CLUES[ORDER[0]].row, CLUES[ORDER[0]].col];
 let marks = {};
 let revealIndex = 0;
 
@@ -352,6 +354,12 @@ function selectClue(i) {
   }
 }
 
+// Naviga le definizioni in ordine numerico (1 → 16)
+function stepClue(delta) {
+  const pos = ORDER.indexOf(clueIndex);
+  selectClue(ORDER[(pos + delta + ORDER.length) % ORDER.length]);
+}
+
 function onCellClick(r, c) {
   const k = key(r, c);
   const candidates = CLUES.map((_, i) => i).filter(i =>
@@ -420,7 +428,7 @@ function handleKey(e, r, c) {
     }
   } else if (e.key === "Tab") {
     e.preventDefault();
-    selectClue((clueIndex + (e.shiftKey ? CLUES.length - 1 : 1)) % CLUES.length);
+    stepClue(e.shiftKey ? -1 : 1);
   }
 }
 
@@ -555,8 +563,8 @@ function renderReveal() {
 /* =========================
    EVENTI
    ========================= */
-$("prevBtn").addEventListener("click", () => selectClue((clueIndex + CLUES.length - 1) % CLUES.length));
-$("nextBtn").addEventListener("click", () => selectClue((clueIndex + 1) % CLUES.length));
+$("prevBtn").addEventListener("click", () => stepClue(-1));
+$("nextBtn").addEventListener("click", () => stepClue(1));
 $("verifyBtn").addEventListener("click", verify);
 $("hintBtn").addEventListener("click", hint);
 $("clearBtn").addEventListener("click", clearWord);
